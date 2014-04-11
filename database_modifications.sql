@@ -1,0 +1,1 @@
+ALTER TABLE `clients` ADD `cpf` VARCHAR(11) NOT NULL AFTER `name`, ADD `address` VARCHAR(1000) NULL AFTER `cpf`;
