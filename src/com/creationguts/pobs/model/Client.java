@@ -1,7 +1,28 @@
 package com.creationguts.pobs.model;
 
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "clients")
 public class Client {
 	
+	@Id
+	@GeneratedValue(generator="client_inc")
+	@GenericGenerator(name="client_inc", strategy="increment")
+	public Long getClientId() {
+		return clientId;
+	}
+	public void setClientId(Long id) {
+		this.clientId = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -33,9 +54,19 @@ public class Client {
 		this.email = email;
 	}
 	
+	@OneToMany(targetEntity=Order.class, mappedBy="client")	
+	public List<Order> getOrders() {
+		return orders;
+	}
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	private Long clientId;
 	private String name;
 	private String cpf;
 	private String address;
 	private String phone;
 	private String email;
+	private List<Order> orders;
 }

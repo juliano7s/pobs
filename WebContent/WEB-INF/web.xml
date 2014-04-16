@@ -10,13 +10,14 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-    <servlet-name>Faces Servlet</servlet-name>
+    <display-name>FacesServlet</display-name>
+    <servlet-name>FacesServlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>/faces/*</url-pattern>
+    <servlet-name>FacesServlet</servlet-name>
+    <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
   <context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
@@ -27,7 +28,13 @@
     <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
     <param-value>resources.application</param-value>
   </context-param>
-  <listener>
-    <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-  </listener>
+  <servlet>    
+    <display-name>ClientServlet</display-name>
+    <servlet-name>ClientServlet</servlet-name>
+    <servlet-class>com.creationguts.pobs.servlet.ClientServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ClientServlet</servlet-name>
+    <url-pattern>/client</url-pattern>
+  </servlet-mapping>
 </web-app>
