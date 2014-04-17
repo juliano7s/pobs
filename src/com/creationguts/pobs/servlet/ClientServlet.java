@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.creationguts.pobs.manager.ClientEntityManager;
+import com.creationguts.pobs.manager.OrderEntityManager;
 
 /**
  * Servlet implementation class ClientServlet
@@ -20,19 +21,20 @@ public class ClientServlet extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public ClientServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+        super();        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		logger.info("Calling servlet ClientServlet");
+		logger.debug("Calling servlet ClientServlet");
 		ClientEntityManager cem = new ClientEntityManager();
 		cem.getClients();
+		OrderEntityManager oem = new OrderEntityManager();
+		oem.getOrders();
 	}
 	
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getRootLogger();
+	private static Logger logger = Logger.getLogger(ClientServlet.class);
 }

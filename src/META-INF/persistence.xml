@@ -8,7 +8,8 @@
 		<description>
             Persistence unit for POBS app
         </description>
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<!-- http://docs.jboss.org/hibernate/orm/4.2/quickstart/en-US/html/index.html -->
 		<properties>
