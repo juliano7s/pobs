@@ -3,3 +3,6 @@ build/*
 *.class
 
 .classpath
+/bin
+.DS_Store
+/build
