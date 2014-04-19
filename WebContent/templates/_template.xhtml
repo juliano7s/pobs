@@ -6,31 +6,13 @@
 <head>
 
 <ui:insert name="head">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script type="text/javascript"
-	src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
-<script type="text/javascript" src="js/jquery.tree.js"></script>
-<link rel="stylesheet" type="text/css" href="css/jquery.tree.css" />
-
-<script src="jquery/js/jquery-1.9.1.js"></script>
-<script src="jquery/js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/jquery.tree.js"></script>
-<link rel="stylesheet"
-	href="jquery/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" />
-<link rel="stylesheet" href="css/usergroup_datatable.css" />
-<link rel="stylesheet" href="google-code-prettify/pretiffy.css" />
-<link rel="stylesheet" href="css/jquery.tree.css" />
-<title><ui:insert name="title">PIDS Dashboard</ui:insert></title>
+<title><ui:insert name="title">POBS</ui:insert></title>
 <script type="text/javascript">
         //<!--
         $(document).ready(function() {           
             $('.jquery').each(function() {
                 eval($(this).html());
             });
-            $('.button').button();
         });
         //-->
 </script>
@@ -59,10 +41,6 @@ $(function(){
 		</ui:insert>
 		<ui:insert name="content">
     	Content area.  See comments below this line in the source.
-    	<!--  include your content file or uncomment the include below and create content.xhtml in this directory -->
-			<!-- <div> -->
-			<!-- <ui:include src="content.xhtml"/> -->
-			<!-- </div> -->
 		</ui:insert>
 	</div>
 

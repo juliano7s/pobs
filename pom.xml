@@ -60,5 +60,11 @@
 			<artifactId>extscript-myfaces20-bundle</artifactId>
 			<version>1.0.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.myfaces.tomahawk</groupId>
+			<artifactId>tomahawk21</artifactId>
+			<version>1.1.14</version>
+		</dependency>
+
 	</dependencies>
 </project>
