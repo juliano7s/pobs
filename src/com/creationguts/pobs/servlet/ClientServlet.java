@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.creationguts.pobs.manager.ClientEntityManager;
-import com.creationguts.pobs.manager.OrderEntityManager;
+import com.creationguts.pobs.jpa.manager.ClientEntityManager;
+import com.creationguts.pobs.jpa.manager.OrderEntityManager;
 
 /**
  * Servlet implementation class ClientServlet

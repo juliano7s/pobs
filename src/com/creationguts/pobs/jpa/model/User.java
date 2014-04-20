@@ -1,4 +1,4 @@
-package com.creationguts.pobs.model;
+package com.creationguts.pobs.jpa.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.creationguts.pobs.model;
+package com.creationguts.pobs.jpa.model;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.creationguts.pobs.model.Client;
+import com.creationguts.pobs.jpa.model.Client;
 
 @Entity
 @Table(name = "orders")

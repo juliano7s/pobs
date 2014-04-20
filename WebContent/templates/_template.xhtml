@@ -2,31 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
-<head>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<h:head>
 
 <ui:insert name="head">
-<title><ui:insert name="title">POBS</ui:insert></title>
-<script type="text/javascript">
-        //<!--
+	<title><ui:insert name="title">POBS</ui:insert></title>
+	<script type="text/javascript">
         $(document).ready(function() {           
             $('.jquery').each(function() {
                 eval($(this).html());
             });
         });
-        //-->
-</script>
-<script type="text/javascript">
-$(function(){
-	$(".datepicker").datepicker({
-			dateFormat: "yy-mm-dd"
-	});
-</script>
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$(".datepicker").datepicker({
+				dateFormat: "yy-mm-dd"
+			});
+		});
+	</script>
 </ui:insert>
+<h:outputStylesheet name="css/main.css" />
+</h:head>
 
-</head>
-
-<body>
+<h:body>
 	<div id="header">
 		<ui:insert name="header">
 			<!--  include your header file or uncomment the include below and create header.xhtml in this directory -->
@@ -51,5 +52,5 @@ $(function(){
 		</ui:insert>
 	</div>
 
-</body>
+</h:body>
 </html>

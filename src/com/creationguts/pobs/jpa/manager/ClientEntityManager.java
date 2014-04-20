@@ -1,4 +1,4 @@
-package com.creationguts.pobs.manager;
+package com.creationguts.pobs.jpa.manager;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import javax.persistence.Persistence;
 import org.apache.log4j.Logger;
 
 import com.creationguts.pobs.Constants;
-import com.creationguts.pobs.model.Client;
+import com.creationguts.pobs.jpa.model.Client;
 
 public class ClientEntityManager {
 	
