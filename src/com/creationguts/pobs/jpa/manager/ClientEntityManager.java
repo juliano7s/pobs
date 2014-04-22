@@ -12,20 +12,80 @@ import com.creationguts.pobs.Constants;
 import com.creationguts.pobs.jpa.model.Client;
 
 public class ClientEntityManager {
-	
+
 	public List<Client> getClients() {
-		
+
 		logger.debug("Getting clients");
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityManagerFactory entityManagerFactory = Persistence
+				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
+		EntityManager entityManager = entityManagerFactory
+				.createEntityManager();
 		entityManager.getTransaction().begin();
-		List<Client> result = entityManager.createQuery( "from Client", Client.class ).getResultList();
+		List<Client> result = entityManager.createQuery("from Client",
+				Client.class).getResultList();
 		logger.debug("total clients returned: " + result.size());
 		entityManager.getTransaction().commit();
 		entityManager.close();
-	
+
 		return result;
 	}
-	
+
+	public List<Client> getClientsByName(String name) {
+		logger.debug("Getting clients by name: " + name);
+		EntityManagerFactory entityManagerFactory = Persistence
+				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
+		EntityManager entityManager = entityManagerFactory
+				.createEntityManager();
+		entityManager.getTransaction().begin();
+		List<Client> result = entityManager.createQuery(
+				"from Client c where c.name like '" + name
+						+ "%' order by c.name", Client.class).getResultList();
+		logger.debug("total clients returned: " + result.size());
+		entityManager.getTransaction().commit();
+		entityManager.close();
+
+		return result;
+	}
+
+	public Client getClientByCpf(String cpf) throws Exception {
+		logger.debug("Getting clients by name: " + cpf);
+		EntityManagerFactory entityManagerFactory = Persistence
+				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
+		EntityManager entityManager = entityManagerFactory
+				.createEntityManager();
+		entityManager.getTransaction().begin();
+		List<Client> result = entityManager.createQuery(
+				"from Client c where c.cpf = '" + cpf + "'", Client.class)
+				.getResultList();
+		logger.debug("total clients returned: " + result.size());
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
+		if (result.size() > 1)
+			throw new Exception("CPF should be unique on clients table");
+
+		return result.get(0);
+	}
+
+	public Client getClientByPhone(String phone) throws Exception {
+		logger.debug("Getting clients by phone: " + phone);
+		EntityManagerFactory entityManagerFactory = Persistence
+				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
+		EntityManager entityManager = entityManagerFactory
+				.createEntityManager();
+		entityManager.getTransaction().begin();
+		List<Client> result = entityManager.createQuery(
+				"from Client c where c.phone = '" + phone + "'", Client.class)
+				.getResultList();
+		logger.debug("total clients returned: " + result.size());
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
+		if (result.size() > 1)
+			throw new Exception("Phone number should be unique on clients table");
+
+		return result.get(0);
+	}
+
 	private static Logger logger = Logger.getLogger(ClientEntityManager.class);
 }

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -88,6 +89,29 @@ public class Order {
 	}
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	@Transient
+	public String getStatus() {
+		if (this.getReady())
+			return "Pronto";
+		else if (this.getDelivered())
+			return "Entregue";
+		return "Em andamento";
+	}
+	
+	@Transient
+	public void setStatus(String status) {
+		if (status.equals("Pronto")) {
+			this.setReady(true);
+			this.setDelivered(false);			
+		} else if (status.equals("Entregue")) {
+			this.setReady(false);
+			this.setDelivered(true);
+		} else {
+			this.setReady(false);
+			this.setDelivered(false);
+		}
 	}
 
 	private Long orderId;

@@ -12,22 +12,19 @@
 	<ui:define name="content">
 		<h:panelGrid columns="1">
 			<h:panelGroup>
-				<div>
-					<h4>Entregas atrasadas:</h4>
+				<div id="client_list">
+					<h4>Busca "#{clientSearch.wholeSearch}"</h4>
+					<ui:repeat var="client" value="#{clientSearch.clients}">
+						<div class="info_block">
+							<span class="info"><b>Nome: </b>#{client.name}</span>
+							<span class="info"><b>CPF: </b>#{client.cpf}</span>
+							<br />
+							<span class="info"><b>Telefone: </b>#{client.phone}</span>
+						</div>
+						<br />
+					</ui:repeat>					
 				</div>
 			</h:panelGroup>
-			
-			<h:panelGroup>
-				<div>
-					<h4>Próximas entregas:</h4>
-				</div>
-			</h:panelGroup>
-			
-			<h:panelGroup>
-				<div>
-					<h4>Clientes devendo:</h4>
-				</div>
-			</h:panelGroup>			
 		</h:panelGrid>
 	</ui:define>
 </ui:composition>
