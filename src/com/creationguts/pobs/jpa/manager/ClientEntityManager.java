@@ -83,6 +83,8 @@ public class ClientEntityManager {
 		
 		if (result.size() > 1)
 			throw new Exception("Phone number should be unique on clients table");
+		else if (result.isEmpty())
+			return null;
 
 		return result.get(0);
 	}

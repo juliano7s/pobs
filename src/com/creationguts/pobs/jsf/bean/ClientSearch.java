@@ -4,8 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -18,41 +21,56 @@ public class ClientSearch implements Serializable {
 
 	/**
 	 * Action
+	 * 
 	 * @return
 	 */
 	public String executeWholeSearch() {
 		logger.debug("Executing whole client search.");
-		logger.debug("Search string: " + wholeSearch);
+		logger.debug("Search string: " + this.wholeSearch);
 		
-		String view = "index";
+		this.wholeSearch = this.wholeSearch.replace("-", "");
+		this.wholeSearch = this.wholeSearch.replace(".", "");
+		String view = "";
 
-		Pattern phoneNumberPattern1 = Pattern.compile("\\d{8}");
-		Pattern phoneNumberPattern2 = Pattern.compile("\\d{2}\\d{8}");
-		Pattern phoneNumberPattern3 = Pattern.compile("\\d{2}-\\d{8}");
+		Pattern phoneNumberPattern1 = Pattern.compile("\\d{2}|\\d{8}");
 		Pattern cpfPattern1 = Pattern.compile("\\d{11}");
-		Pattern cpfPattern2 = Pattern.compile("\\d{9}-d{2}");
 
-		if (phoneNumberPattern1.matcher(wholeSearch).matches()) {
-			logger.debug("wholeSearch matched phoneNumberPattern1 " + phoneNumberPattern1);
-		} else if (phoneNumberPattern2.matcher(wholeSearch).matches()) {
-			logger.debug("wholeSearch matched phoneNumberPattern2 " + phoneNumberPattern2);
-		} else if (phoneNumberPattern3.matcher(wholeSearch).matches()) {
-			logger.debug("wholeSearch matched phoneNumberPattern3 " + phoneNumberPattern3);
-		} else if (cpfPattern1.matcher(wholeSearch).matches()) {
-			logger.debug("wholeSearch matched cpfPattern1 " + cpfPattern1);
-		} else if (cpfPattern2.matcher(wholeSearch).matches()) {
-			logger.debug("wholeSearch matched cpfPattern2 " + cpfPattern1);
-		} else {
-			logger.debug("wholeSearch matched no pattern.");
-			clients = (new ClientEntityManager()).getClientsByName(wholeSearch);
-			view = "clients";
+		ClientEntityManager cem = new ClientEntityManager();
+		try {
+			if (phoneNumberPattern1.matcher(this.wholeSearch).matches()) {
+				logger.debug("wholeSearch matched phoneNumberPattern1 "
+						+ phoneNumberPattern1);
+				this.client = cem.getClientByPhone(this.wholeSearch);
+				view = "client";
+			} else if (cpfPattern1.matcher(this.wholeSearch).matches()) {
+				logger.debug("wholeSearch matched cpfPattern1 " + cpfPattern1);
+				this.client = cem.getClientByCpf(this.wholeSearch);
+				view = "client";
+			} else {
+				logger.debug("wholeSearch matched no pattern.");
+				this.clients = cem.getClientsByName(this.wholeSearch);
+				view = "clients";
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			view = "index";
+			UIComponent mainSearchButton = UIComponent.getCurrentComponent(FacesContext.getCurrentInstance());
+			FacesContext.getCurrentInstance().addMessage(
+					mainSearchButton.getClientId(FacesContext
+							.getCurrentInstance()),
+					new FacesMessage(e.getMessage()));
+		}
+		
+		if (this.client == null && this.clients == null) {
+			logger.debug("Client not found, going to new client view");
+			view = "newclient";
 		}
 
 		return view;
 	}
 
 	public String getWholeSearch() {
-		return wholeSearch;
+		return this.wholeSearch;
 	}
 
 	public void setWholeSearch(String search) {
@@ -60,7 +78,7 @@ public class ClientSearch implements Serializable {
 	}
 
 	public List<Client> getClients() {
-		return clients;
+		return this.clients;
 	}
 
 	public void setClients(List<Client> clients) {
@@ -68,7 +86,7 @@ public class ClientSearch implements Serializable {
 	}
 
 	public Client getClient() {
-		return client;
+		return this.client;
 	}
 
 	public void setClient(Client client) {

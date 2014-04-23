@@ -1,6 +1,10 @@
 
+body {
+	padding: 0 0 0 0;
+}
+
 #header {
-	background-color: #2E5CB8;
+	margin: 0 0 0 0;	
 	padding: 5px 5px 5px 5px;
 	color: white;
 }
@@ -8,8 +12,17 @@
 	color: white;
 }
 
+#header_menu1 {
+	margin: 0 0 5px 0;
+	background-color: #2E5CB8;
+	padding: 5px 5px 5px 5px;
+}
 #header_menu1 span {
 	margin: 0 10px 0 0;
+}
+#header_message_block .error {
+	color: red;
+	text-decoration: bold;
 }
 
 #content {

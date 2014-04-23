@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+	<ui:composition>
+		<h:form id="new_order_form">
+		<div id="new_order">
+			<h:form id="new_order_form">			
+			<h:panelGrid columns="3">				
+				<span><h:outputText>Descrição do pedido: </h:outputText></span>
+				<span><h:inputTextarea id="new_order_description_input" cols="10" value="#{newOrder.description}" /></span>
+				<span><h:message></h:message></span>
+				
+				<span><h:outputText>Responsável: </h:outputText></span>
+				<span>
+				<h:selectOneMenu id="new_order_owner_input" value="#{newOrder.owner}">
+					<f:selectItems value="#{newOrder.owners}" var="owner" itemValue="#{owner}" itemLabel="#{owner.name}" />					
+				</h:selectOneMenu>
+				</span>
+				<span><h:message for="new_order_owner_input"></h:message></span>
+				
+				<span><h:outputText>Data do pedido: </h:outputText></span>
+				<span><h:inputText id="new_order_request_date_input" cols="10" value="#{newOrder.requestDate}" /></span>
+				<span><h:message for="new_order_request_date_input"></h:message></span>
+				
+				<span><h:outputText>Data de entrega: </h:outputText></span>
+				<span><h:inputText id="new_order_delivery_date_input" cols="10" value="#{newOrder.deliveryDate}" /></span>
+				<span><h:message for="new_order_delivery_date_input"></h:message></span>
+				
+				<span><h:outputText>Valor: </h:outputText></span>
+				<span><h:inputText id="new_order_value_input" cols="10" value="#{newOrder.value}" /></span>
+				<span><h:message for="new_order_value_input"></h:message></span>
+				
+				<span><h:outputText>Custo: </h:outputText></span>
+				<span><h:inputText id="new_order_cost_input" cols="10" value="#{newOrder.cost}" /></span>
+				<span><h:message for="new_order_cost_input"></h:message></span>
+			</h:panelGrid>
+			</h:form>
+		</div>
+		<div id="new_order_message">
+			<span class="error"><h:message for="new_order_button" /></span>
+		</div>
+		</h:form>
+	</ui:composition>
+</body>
+</html>
