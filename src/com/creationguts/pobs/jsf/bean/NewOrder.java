@@ -67,11 +67,11 @@ public class NewOrder implements Serializable {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	public User getUser() {
-		return this.user;
+	public User getOwner() {
+		return this.owner;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 	
 	public List<User> getOwners() {
@@ -88,7 +88,7 @@ public class NewOrder implements Serializable {
 	private Float value;
 	private Float cost;
 	private Client client;
-	private User user;
+	private User owner;
 	private List<User> owners;
 
 	/**

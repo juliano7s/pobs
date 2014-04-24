@@ -89,11 +89,13 @@ public class Order {
 		this.client = client;
 	}
 
-	public User getUser() {
-		return this.user;
+	@ManyToOne
+	@JoinColumn(name="ownerid")
+	public User getOwner() {
+		return this.owner;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 	
 	@Transient
@@ -129,5 +131,5 @@ public class Order {
 	private Boolean delivered;
 	private Boolean ready;
 	private Client client;
-	private User user;
+	private User owner;
 }
