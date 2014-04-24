@@ -13,17 +13,15 @@
 		<div id="client_info">
 			<h4>#{clientSearch.client.name}</h4>
 		</div>
-		<div id="new_order">
-			<ui:include src="templates/new_order_form.xhtml"></ui:include>
-		</div>
+		<ui:include src="templates/new_order_form.xhtml"></ui:include>
+
 		<div id="client_orders">
 			<ui:repeat var="order" value="#{clientSearch.client.orders}">
 				<div class="info_block">
-					<span class="info"><b>Pedido: </b>#{order.description}</span> <span>
-						class="info"><b>Data: </b>#{order.requestDate}
-					</span> <span> class="info"><b>Entrega: </b>#{order.deliveryDate}
-					</span> <span> class="info"><b>Status: </b>#{order.ready}
-					</span>
+					<span class="info"><b>Pedido: </b>#{order.description}</span> <span
+						class="info"><b>Data: </b>#{order.requestDate}</span> <span
+						class="info"><b>Entrega: </b>#{order.deliveryDate}</span> <span
+						class="info"><b>Status: </b>#{order.ready} </span>
 				</div>
 				<br />
 			</ui:repeat>

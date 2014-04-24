@@ -7,44 +7,52 @@
 <body>
 	<ui:composition>
 		<h:form id="new_order_form">
-		<div id="new_order">
-			<h:form id="new_order_form">			
-			<h:panelGrid columns="3">				
-				<span><h:outputText>Descrição do pedido: </h:outputText></span>
-				<span><h:inputTextarea id="new_order_description_input" cols="10" value="#{newOrder.description}" /></span>
-				<span><h:message></h:message></span>
-				
-				<span><h:outputText>Responsável: </h:outputText></span>
-				<span>
-				<h:selectOneMenu id="new_order_owner_input" value="#{newOrder.owner}">
-					<f:selectItems value="#{newOrder.owners}" var="owner" itemValue="#{owner}" itemLabel="#{owner.name}" />					
-				</h:selectOneMenu>
-				</span>
-				<span><h:message for="new_order_owner_input"></h:message></span>
-				
-				<span><h:outputText>Data do pedido: </h:outputText></span>
-				<span><h:inputText id="new_order_request_date_input" cols="10" value="#{newOrder.requestDate}" /></span>
-				<span><h:message for="new_order_request_date_input"></h:message></span>
-				
-				<span><h:outputText>Data de entrega: </h:outputText></span>
-				<span><h:inputText id="new_order_delivery_date_input" cols="10" value="#{newOrder.deliveryDate}" /></span>
-				<span><h:message for="new_order_delivery_date_input"></h:message></span>
-				
-				<span><h:outputText>Valor: </h:outputText></span>
-				<span><h:inputText id="new_order_value_input" cols="10" value="#{newOrder.value}" /></span>
-				<span><h:message for="new_order_value_input"></h:message></span>
-				
-				<span><h:outputText>Custo: </h:outputText></span>
-				<span><h:inputText id="new_order_cost_input" cols="10" value="#{newOrder.cost}" /></span>
-				<span><h:message for="new_order_cost_input"></h:message></span>
-				
-				<h:commandButton id="new_order_button" value="Salvar"></h:commandButton>
-			</h:panelGrid>
-			</h:form>
-		</div>
-		<div id="new_order_message">
-			<span class="error"><h:message for="new_order_button" /></span>
-		</div>
+			<a id="hide_order" href="#">+ pedido</a>
+			<div id="new_order">
+				<h:panelGrid columns="3">
+					<h:outputText>Descrição do pedido: </h:outputText>
+					<h:inputTextarea id="new_order_description_input" cols="25"
+						rows="5" value="#{newOrder.description}" />
+					<h:message for="new_order_description_input"></h:message>
+
+					<h:outputText>Responsável: </h:outputText>
+
+					<h:selectOneMenu id="new_order_owner_input"
+						value="#{newOrder.owner}">
+						<f:selectItems value="#{newOrder.owners}" var="owner"
+							itemValue="#{owner}" itemLabel="#{owner.name}" />
+					</h:selectOneMenu>
+
+					<h:message for="new_order_owner_input"></h:message>
+
+					<h:outputText>Data do pedido: </h:outputText>
+					<h:inputText id="new_order_request_date_input" cols="10"
+						value="#{newOrder.requestDate}" converter="javax.faces.DateTime"
+						styleClass="datepicker" />
+					<h:message for="new_order_request_date_input"></h:message>
+
+					<h:outputText>Data da entrega: </h:outputText>
+					<h:inputText id="new_order_delivery_date_input" cols="10"
+						value="#{newOrder.deliveryDate}" converter="javax.faces.DateTime"
+						styleClass="datepicker" />
+					<h:message for="new_order_delivery_date_input"></h:message>
+
+					<h:outputText>Valor (R$): </h:outputText>
+					<h:inputText id="new_order_value_input" cols="10"
+						value="#{newOrder.value}" converter="javax.faces.Float" />
+					<h:message for="new_order_value_input"></h:message>
+
+					<h:outputText>Custo (R$): </h:outputText>
+					<h:inputText id="new_order_cost_input" cols="10"
+						value="#{newOrder.cost}" converter="javax.faces.Float" />
+					<h:message for="new_order_cost_input"></h:message>
+
+					<h:commandButton id="new_order_button" value="Salvar"></h:commandButton>
+				</h:panelGrid>
+			</div>
+			<div id="new_order_message">
+				<span class="error"><h:message for="new_order_button" /></span>
+			</div>
 		</h:form>
 	</ui:composition>
 </body>

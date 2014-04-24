@@ -10,16 +10,10 @@
 <ui:composition template="templates/_template.xhtml">
 	<ui:define name="section_title"></ui:define>
 	<ui:define name="content">
-		<h:panelGrid columns="1">
-			<h:panelGroup>
-				<div id="new_client">
-					<h4>Novo cliente</h4>
-				</div>
-				<div id="new_order">
-					<ui:include src="templates/new_order_form.xhtml"></ui:include>
-				</div>				
-			</h:panelGroup>
-		</h:panelGrid>
+		<div id="new_client">
+			<h4>Novo cliente</h4>
+		</div>
+		<ui:include src="templates/new_order_form.xhtml"></ui:include>
 	</ui:define>
 </ui:composition>
 </html>

@@ -3,28 +3,22 @@
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html">
-	
-<h:head>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
 
-<ui:insert name="head">
-	<title><ui:insert name="title">POBS</ui:insert></title>
-	<script type="text/javascript">
-        $(document).ready(function() {           
-            $('.jquery').each(function() {
-                eval($(this).html());
-            });
-        });
-	</script>
-	<script type="text/javascript">
-		$(function(){
-			$(".datepicker").datepicker({
-				dateFormat: "yy-mm-dd"
-			});
-		});
-	</script>
-</ui:insert>
-<h:outputStylesheet name="css/main.css" />
+<h:head>
+	<ui:insert name="head">
+		<title><ui:insert name="title">POBS</ui:insert></title>
+		<h:outputScript name="jquery/js/jquery-1.9.1.js" />
+		<h:outputScript name="jquery/js/jquery-ui-1.10.3.custom.js" />
+		<h:outputStylesheet name="css/main.css" />
+		<h:outputStylesheet
+			name="jquery/css/ui-lightness/jquery-ui-1.10.3.custom.css" />
+		<!--  <h:outputScript library="js" target="jquery/js/jquery-ui-1.10.3.custom.min.js"></h:outputScript> -->
+
+		<h:outputScript name="js/main.js" />
+
+	</ui:insert>
 </h:head>
 
 <h:body>
