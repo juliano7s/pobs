@@ -93,6 +93,23 @@ public class ClientManagedBean implements Serializable {
 				this.client = c;
 		}
 
+		return "newclient";
+	}
+	
+	/**
+	 * Action: choose client to view on client.xhtml
+	 */
+	public String viewClient() {
+		logger.debug("Editing client");
+		Long clientId = Long.parseLong(FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap().get("clientId"));
+		logger.debug("Id: " + clientId);
+
+		for (Client c : this.clients) {
+			if (c.getId() == clientId)
+				this.client = c;
+		}
+
 		return "client";
 	}
 

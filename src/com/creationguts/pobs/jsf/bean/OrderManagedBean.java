@@ -1,15 +1,15 @@
 package com.creationguts.pobs.jsf.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import org.apache.log4j.Logger;
 
-import com.creationguts.pobs.jpa.model.Client;
+import com.creationguts.pobs.jpa.model.Order;
 import com.creationguts.pobs.jpa.model.User;
 
 @ManagedBean
@@ -24,72 +24,36 @@ public class OrderManagedBean implements Serializable {
 		logger.debug("Saving new order: ");
 		return null;
 	}
+	
+	public ClientManagedBean getClientManagedBean() {
+		return this.clientManagedBean;
+	}
 
-	public String getDescription() {
-		return this.description;
+	public void setClientManagedBean(ClientManagedBean clientManagedBean) {
+		this.clientManagedBean = clientManagedBean;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	
+	public Order getNewOrder() {
+		return this.newOrder;
 	}
-	public Date getRequestDate() {
-		return this.requestDate;
-	}
-	public void setRequestDate(Date requestDate) {
-		this.requestDate = requestDate;
-	}
-	public Date getDeliveryDate() {
-		return this.deliveryDate;
-	}
-	public void setDeliveryDate(Date deliveryDate) {
-		this.deliveryDate = deliveryDate;
-	}
-	public Date getReadyDate() {
-		return this.readyDate;
-	}
-	public void setReadyDate(Date readyDate) {
-		this.readyDate = readyDate;
-	}
-	public Float getValue() {
-		return this.value;
-	}
-	public void setValue(Float value) {
-		this.value = value;
-	}
-	public Float getCost() {
-		return this.cost;
-	}
-	public void setCost(Float cost) {
-		this.cost = cost;
-	}
-	public Client getClient() {
-		return this.client;
-	}
-	public void setClient(Client client) {
-		this.client = client;
-	}
-	public User getOwner() {
-		return this.owner;
-	}
-	public void setOwner(User owner) {
-		this.owner = owner;
+
+	public void setNewOrder(Order newOrder) {
+		this.newOrder = newOrder;
 	}
 	
 	public List<User> getOwners() {
-		return this.owners;
+		return owners;
 	}
+
 	public void setOwners(List<User> owners) {
 		this.owners = owners;
 	}
 
-	private String description;
-	private Date requestDate;
-	private Date deliveryDate;
-	private Date readyDate;
-	private Float value;
-	private Float cost;
-	private Client client;
-	private User owner;
+	private Order newOrder;
 	private List<User> owners;
+	
+	@ManagedProperty(value="#{clientManagedBean}")
+	private ClientManagedBean clientManagedBean;
 
 	/**
 	 * 

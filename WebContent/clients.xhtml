@@ -20,10 +20,10 @@
 								class="info"><b>CPF: </b>#{client.cpf}</span> <br /> <span
 								class="info"><b>Telefone: </b>#{client.phone}</span> <span>
 								<h:form>
-									<h:commandLink action="#{clientManagedBean.editClient}"
-										value="Editar">
-										<f:param name="clientId"
-											value="#{clientManagedBean.client.id}" />
+									<h:commandLink action="#{clientManagedBean.viewClient}"
+										value="Info">
+										<f:param name="clientId" 
+											value="#{client.id}" />
 									</h:commandLink>
 								</h:form>
 							</span>

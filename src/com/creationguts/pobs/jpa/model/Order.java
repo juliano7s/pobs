@@ -86,7 +86,16 @@ public class Order {
 	}
 
 	public String getStatus() {
-		return this.status;
+		String statusPt = "ERROR";
+		if (this.status.equals("INPROGRESS")) {
+			statusPt = "Em andamento";
+		} else if (this.status.equals("READY")) {
+			statusPt = "Pronto";
+		} else if (this.status.equals("DELIVERED")) {
+			statusPt = "Entregue";
+		}
+		
+		return statusPt;
 	}
 	public void setStatus(String status) {
 		this.status = status;

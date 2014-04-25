@@ -17,15 +17,6 @@
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pobs" />
 			<property name="javax.persistence.jdbc.user" value="pobs" />
 			<property name="javax.persistence.jdbc.password" value="LszxRcHWKd8CHvxE" />
-
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/pobs"/>
-			<property name="hibernate.default_schema" value="pobs"/>
-			<property name="hibernate.connection.username" value="pobs"/>
-			<property name="hibernate.connection.password" value="LszxRcHWKd8CHvxE"/>
-			<!-- <property name="hibernate.hbm2ddl.auto" value="create" /> -->
 		</properties>		
 	</persistence-unit>
 </persistence>
