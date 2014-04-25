@@ -10,13 +10,13 @@
 <ui:composition template="templates/_template.xhtml">
 	<ui:define name="section_title"></ui:define>
 	<ui:define name="content">
-		<div id="client_info">
-			<h4>#{clientSearch.client.name}</h4>
+		<div id="client_form">
+			<h4>#{clientManagedBean.client.name}</h4>
 		</div>
 		<ui:include src="templates/new_order_form.xhtml"></ui:include>
 
 		<div id="client_orders">
-			<ui:repeat var="order" value="#{clientSearch.client.orders}">
+			<ui:repeat var="order" value="#{clientManagedBean.client.orders}">
 				<div class="info_block">
 					<span class="info"><b>Pedido: </b>#{order.description}</span> <span
 						class="info"><b>Data: </b>#{order.requestDate}</span> <span

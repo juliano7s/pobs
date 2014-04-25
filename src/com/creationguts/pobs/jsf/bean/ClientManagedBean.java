@@ -17,12 +17,11 @@ import com.creationguts.pobs.jpa.model.Client;
 
 @ManagedBean
 @RequestScoped
-public class ClientSearch implements Serializable {
+public class ClientManagedBean implements Serializable {
 
 	/**
-	 * Action
-	 * 
-	 * @return
+	 * Action execute search for name, phone and cpf 
+	 * @return view string
 	 */
 	public String executeWholeSearch() {
 		logger.debug("Executing whole client search.");
@@ -97,6 +96,6 @@ public class ClientSearch implements Serializable {
 	private List<Client> clients;
 	private Client client;
 
-	private static Logger logger = Logger.getLogger(ClientSearch.class);
+	private static Logger logger = Logger.getLogger(ClientManagedBean.class);
 	private static final long serialVersionUID = 2461829560777826670L;
 }

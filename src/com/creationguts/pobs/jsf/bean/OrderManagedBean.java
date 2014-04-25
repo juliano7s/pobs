@@ -14,7 +14,7 @@ import com.creationguts.pobs.jpa.model.User;
 
 @ManagedBean
 @RequestScoped
-public class NewOrder implements Serializable {
+public class OrderManagedBean implements Serializable {
 	
 	/**
 	 * Action
@@ -95,5 +95,5 @@ public class NewOrder implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 536149967322807306L;
-	private static Logger logger = Logger.getLogger(NewOrder.class);
+	private static Logger logger = Logger.getLogger(OrderManagedBean.class);
 }

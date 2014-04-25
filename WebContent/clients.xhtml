@@ -13,8 +13,8 @@
 		<h:panelGrid columns="1">
 			<h:panelGroup>
 				<div id="client_list">
-					<h4>Busca "#{clientSearch.wholeSearch}"</h4>
-					<ui:repeat var="client" value="#{clientSearch.clients}">
+					<h4>Busca "#{clientManagedBean.wholeSearch}"</h4>
+					<ui:repeat var="client" value="#{clientManagedBean.clients}">
 						<div class="info_block">
 							<span class="info"><b>Nome: </b>#{client.name}</span>
 							<span class="info"><b>CPF: </b>#{client.cpf}</span>
