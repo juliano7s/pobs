@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -16,17 +16,19 @@ import com.creationguts.pobs.jpa.manager.ClientEntityManager;
 import com.creationguts.pobs.jpa.model.Client;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class ClientManagedBean implements Serializable {
 
 	/**
-	 * Action execute search for name, phone and cpf 
-	 * @return view string
+	 * Action: execute search for name, phone and cpf
 	 */
 	public String executeWholeSearch() {
 		logger.debug("Executing whole client search.");
 		logger.debug("Search string: " + this.wholeSearch);
-		
+		logger.debug("Clearing client and client list from bean");
+		this.client = null;
+		this.clients = null;
+
 		this.wholeSearch = this.wholeSearch.replace("-", "");
 		this.wholeSearch = this.wholeSearch.replace(".", "");
 		String view = "";
@@ -53,19 +55,63 @@ public class ClientManagedBean implements Serializable {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			view = "index";
-			UIComponent mainSearchButton = UIComponent.getCurrentComponent(FacesContext.getCurrentInstance());
+			UIComponent mainSearchButton = UIComponent
+					.getCurrentComponent(FacesContext.getCurrentInstance());
 			FacesContext.getCurrentInstance().addMessage(
 					mainSearchButton.getClientId(FacesContext
 							.getCurrentInstance()),
 					new FacesMessage(e.getMessage()));
 		}
-		
+
 		if (this.client == null && this.clients == null) {
 			logger.debug("Client not found, going to new client view");
-			view = "newclient";
+			view = this.newClient();
 		}
 
 		return view;
+	}
+
+	/**
+	 * Action: create new client to persist and redirect to newclient.xhtml
+	 */
+	public String newClient() {
+		this.client = new Client();
+		return "newclient";
+	}
+
+	/**
+	 * Action: choose client to edit on client.xhtml
+	 */
+	public String editClient() {
+		logger.debug("Editing client");
+		Long clientId = Long.parseLong(FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap().get("clientId"));
+		logger.debug("Id: " + clientId);
+
+		for (Client c : this.clients) {
+			if (c.getId() == clientId)
+				this.client = c;
+		}
+
+		return "client";
+	}
+
+	/**
+	 * Action: save client to the database(insert/update)
+	 */
+	public String saveClient() {
+		logger.debug("Saving client on the database");
+		ClientEntityManager cem = new ClientEntityManager();
+		cem.saveClient(this.client);
+		
+		UIComponent clientSaveButton = UIComponent
+				.getCurrentComponent(FacesContext.getCurrentInstance());
+		FacesContext.getCurrentInstance().addMessage(
+				clientSaveButton.getClientId(FacesContext
+						.getCurrentInstance()),
+				new FacesMessage("Client saved with id " + this.client.getId()));
+
+		return "client";
 	}
 
 	public String getWholeSearch() {

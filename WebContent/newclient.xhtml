@@ -10,10 +10,40 @@
 <ui:composition template="templates/_template.xhtml">
 	<ui:define name="section_title"></ui:define>
 	<ui:define name="content">
-		<div id="new_client">
-			<h4>Novo cliente</h4>
-		</div>
-		<ui:include src="templates/new_order_form.xhtml"></ui:include>
+		<h:form id="new_client_form">
+			<div id="new_client">
+				<h:outputText>#{clientManagedBean.client.id}</h:outputText>
+				<h:panelGrid columns="3">
+					<h:outputText>Nome: </h:outputText>
+					<h:inputText id="client_name_input"
+						value="#{clientManagedBean.client.name}" />
+					<h:message for="client_name_input"></h:message>
+
+					<h:outputText>CPF: </h:outputText>
+					<h:inputText id="client_cpf_input"
+						value="#{clientManagedBean.client.cpf}" />
+					<h:message for="client_cpf_input"></h:message>
+
+					<h:outputText>Telefone: </h:outputText>
+					<h:inputText id="client_phone_input"
+						value="#{clientManagedBean.client.phone}" />
+					<h:message for="client_phone_input"></h:message>
+
+					<h:outputText>Endereço: </h:outputText>
+					<h:inputText id="client_address_input"
+						value="#{clientManagedBean.client.address}" />
+					<h:message for="client_address_input"></h:message>
+
+					<h:outputText>Email: </h:outputText>
+					<h:inputText id="client_email_input"
+						value="#{clientManagedBean.client.email}" />
+					<h:message for="client_email_input"></h:message>
+
+					<h:commandButton id="client_button"
+						action="#{clientManagedBean.saveClient}"></h:commandButton>
+				</h:panelGrid>
+			</div>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

@@ -10,9 +10,17 @@
 <ui:composition template="templates/_template.xhtml">
 	<ui:define name="section_title"></ui:define>
 	<ui:define name="content">
-		<div id="client_form">
-			<h4>#{clientManagedBean.client.name}</h4>
+		<h:message for="client_button"></h:message>
+		<div id="client_info">
+			<div class="info_block">
+				<span class="info"><b>Id: </b>#{clientManagedBean.client.id}</span>
+				<span class="info"><b>Nome: </b>#{clientManagedBean.client.name}</span>
+				<span class="info"><b>CPF: </b>#{clientManagedBean.client.cpf}</span>
+				<span class="info"><b>Telefone: </b>#{clientManagedBean.client.phone}</span>
+				<span class="info"><b>Endereço: </b>#{clientManagedBean.client.address}</span>
+			</div>
 		</div>
+
 		<ui:include src="templates/new_order_form.xhtml"></ui:include>
 
 		<div id="client_orders">
@@ -21,7 +29,9 @@
 					<span class="info"><b>Pedido: </b>#{order.description}</span> <span
 						class="info"><b>Data: </b>#{order.requestDate}</span> <span
 						class="info"><b>Entrega: </b>#{order.deliveryDate}</span> <span
-						class="info"><b>Status: </b>#{order.ready} </span>
+						class="info"><b>Custo: </b>#{order.cost}</span> <span class="info"><b>Valor:
+					</b>#{order.value}</span> <span class="info"><b>Status: </b>#{order.status}</span>
+					<span class="info"><b>Responsável: </b>#{order.owner.name}</span>
 				</div>
 				<br />
 			</ui:repeat>

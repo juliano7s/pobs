@@ -89,5 +89,16 @@ public class ClientEntityManager {
 		return result.get(0);
 	}
 
+	public void saveClient(Client client) {
+		logger.debug("Saving client to the database: " + client);
+		EntityManagerFactory entityManagerFactory = Persistence
+				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		entityManager.merge(client);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+	}
+
 	private static Logger logger = Logger.getLogger(ClientEntityManager.class);
 }

@@ -17,52 +17,52 @@ public class Client {
 	@Id
 	@GeneratedValue(generator="client_inc")
 	@GenericGenerator(name="client_inc", strategy="increment")
-	public Long getClientId() {
-		return clientId;
+	public Long getId() {
+		return this.id;
 	}
-	public void setClientId(Long id) {
-		this.clientId = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
 	public String getCpf() {
-		return cpf;
+		return this.cpf;
 	}
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
 	}
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
 	
-	@OneToMany(targetEntity=Order.class, mappedBy="client")	
+	@OneToMany(targetEntity=Order.class, mappedBy="client")
 	public List<Order> getOrders() {
-		return orders;
+		return this.orders;
 	}
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
 
-	private Long clientId;
+	private Long id;
 	private String name;
 	private String cpf;
 	private String address;

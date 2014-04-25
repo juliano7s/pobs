@@ -18,33 +18,33 @@ public class User {
 	@Id
 	@GeneratedValue(generator="user_inc")
 	@GenericGenerator(name="user_inc", strategy="increment")
-	@Column(name="ownerid")
-	public Long getUserId() {
-		return userId;
+	@Column(name="id")
+	public Long getId() {
+		return this.id;
 	}
-	public void setUserId(Long id) {
-		this.userId = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
@@ -52,13 +52,13 @@ public class User {
 	
 	@OneToMany(targetEntity=Order.class, mappedBy="owner")
 	public List<Order> getOrders() {
-		return orders;
+		return this.orders;
 	}
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
 
-	private Long userId;
+	private Long id;
 	private String name;
 	private String email;
 	private String phone;

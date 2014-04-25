@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,11 +19,11 @@ public class Order {
 	@Id
 	@GeneratedValue(generator="order_inc")
 	@GenericGenerator(name="order_inc", strategy="increment")
-	public Long getOrderId() {
-		return this.orderId;
+	public Long getId() {
+		return this.id;
 	}
-	public void setOrderId(Long id) {
-		this.orderId = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getDescription() {
 		return this.description;
@@ -67,18 +66,6 @@ public class Order {
 	public void setCost(Float cost) {
 		this.cost = cost;
 	}
-	public Boolean getDelivered() {
-		return this.delivered;
-	}
-	public void setDelivered(Boolean delivered) {
-		this.delivered = delivered;
-	}
-	public Boolean getReady() {
-		return this.ready;
-	}
-	public void setReady(Boolean ready) {
-		this.ready = ready;
-	}
 	
 	@ManyToOne
 	@JoinColumn(name="clientid", nullable=false)
@@ -97,39 +84,22 @@ public class Order {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	
-	@Transient
+
 	public String getStatus() {
-		if (this.getReady())
-			return "Pronto";
-		else if (this.getDelivered())
-			return "Entregue";
-		return "Em andamento";
+		return this.status;
 	}
-	
-	@Transient
 	public void setStatus(String status) {
-		if (status.equals("Pronto")) {
-			this.setReady(true);
-			this.setDelivered(false);
-		} else if (status.equals("Entregue")) {
-			this.setReady(false);
-			this.setDelivered(true);
-		} else {
-			this.setReady(false);
-			this.setDelivered(false);
-		}
+		this.status = status;
 	}
 
-	private Long orderId;
+	private Long id;
 	private String description;
 	private Date requestDate;
 	private Date deliveryDate;
 	private Date readyDate;
+	private String status;
 	private Float value;
 	private Float cost;
-	private Boolean delivered;
-	private Boolean ready;
 	private Client client;
 	private User owner;
 }
