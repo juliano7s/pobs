@@ -2,65 +2,51 @@ package com.creationguts.pobs.jpa.manager;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.apache.log4j.Logger;
 
-import com.creationguts.pobs.Constants;
 import com.creationguts.pobs.jpa.model.Client;
 
-public class ClientEntityManager {
+public class ClientEntityManager extends EntityManager<Client> {
 
 	public List<Client> getClients() {
-
 		logger.debug("Getting clients");
-		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
-		EntityManager entityManager = entityManagerFactory
-				.createEntityManager();
-		entityManager.getTransaction().begin();
-		List<Client> result = entityManager.createQuery("from Client",
-				Client.class).getResultList();
+		this.getEntityManager().getTransaction().begin();
+		List<Client> result = this.getEntityManager()
+				.createQuery("from Client", Client.class).getResultList();
 		logger.debug("total clients returned: " + result.size());
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		this.getEntityManager().getTransaction().commit();
+		this.closeEntityManager();
 
 		return result;
 	}
 
 	public List<Client> getClientsByName(String name) {
 		logger.debug("Getting clients by name: " + name);
-		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
-		EntityManager entityManager = entityManagerFactory
-				.createEntityManager();
-		entityManager.getTransaction().begin();
-		List<Client> result = entityManager.createQuery(
-				"from Client c where c.name like '" + name
-						+ "%' order by c.name", Client.class).getResultList();
+		this.getEntityManager().getTransaction().begin();
+		List<Client> result = this
+				.getEntityManager()
+				.createQuery(
+						"from Client c where c.name like '" + name
+								+ "%' order by c.name", Client.class)
+				.getResultList();
 		logger.debug("total clients returned: " + result.size());
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		this.getEntityManager().getTransaction().commit();
+		this.closeEntityManager();
 
 		return result;
 	}
 
 	public Client getClientByCpf(String cpf) throws Exception {
 		logger.debug("Getting clients by name: " + cpf);
-		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
-		EntityManager entityManager = entityManagerFactory
-				.createEntityManager();
-		entityManager.getTransaction().begin();
-		List<Client> result = entityManager.createQuery(
-				"from Client c where c.cpf = '" + cpf + "'", Client.class)
-				.getResultList();
+		this.getEntityManager().getTransaction().begin();
+		List<Client> result = this
+				.getEntityManager()
+				.createQuery("from Client c where c.cpf = '" + cpf + "'",
+						Client.class).getResultList();
 		logger.debug("total clients returned: " + result.size());
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		
+		this.getEntityManager().getTransaction().commit();
+		this.closeEntityManager();
+
 		if (result.size() > 1)
 			throw new Exception("CPF should be unique on clients table");
 
@@ -69,20 +55,18 @@ public class ClientEntityManager {
 
 	public Client getClientByPhone(String phone) throws Exception {
 		logger.debug("Getting clients by phone: " + phone);
-		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
-		EntityManager entityManager = entityManagerFactory
-				.createEntityManager();
-		entityManager.getTransaction().begin();
-		List<Client> result = entityManager.createQuery(
-				"from Client c where c.phone = '" + phone + "'", Client.class)
-				.getResultList();
+		this.getEntityManager().getTransaction().begin();
+		List<Client> result = this
+				.getEntityManager()
+				.createQuery("from Client c where c.phone = '" + phone + "'",
+						Client.class).getResultList();
 		logger.debug("total clients returned: " + result.size());
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		
+		this.getEntityManager().getTransaction().commit();
+		this.closeEntityManager();
+
 		if (result.size() > 1)
-			throw new Exception("Phone number should be unique on clients table");
+			throw new Exception(
+					"Phone number should be unique on clients table");
 		else if (result.isEmpty())
 			return null;
 
@@ -91,13 +75,23 @@ public class ClientEntityManager {
 
 	public void saveClient(Client client) {
 		logger.debug("Saving client to the database: " + client);
-		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory(Constants.POBS_PERSISTENCE_UNIT);
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-		entityManager.merge(client);
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		this.getEntityManager().getTransaction().begin();
+		this.getEntityManager().merge(client);
+		this.getEntityManager().getTransaction().commit();
+		this.closeEntityManager();
+	}
+
+	public void loadAll(Client client) {
+		logger.debug("Loading attributes from client: " + client);
+		this.getEntityManager().getTransaction().begin();
+		client = this.getEntityManager().merge(client);
+		// logger.debug("EM.contains = " +
+		// this.getEntityManager().contains(client));
+		if (client.getOrders() != null)
+			client.getOrders().size(); // Force collection to load. See
+										// http://stackoverflow.com/questions/21257947/reattaching-an-entity-to-lazy-load-a-collection-jpa-hibernate
+		this.getEntityManager().getTransaction().commit();
+		this.closeEntityManager();
 	}
 
 	private static Logger logger = Logger.getLogger(ClientEntityManager.class);

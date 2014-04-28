@@ -106,8 +106,10 @@ public class ClientManagedBean implements Serializable {
 		logger.debug("Id: " + clientId);
 
 		for (Client c : this.clients) {
-			if (c.getId() == clientId)
+			if (c.getId() == clientId) {
+				(new ClientEntityManager()).loadAll(c);
 				this.client = c;
+			}
 		}
 
 		return "client";

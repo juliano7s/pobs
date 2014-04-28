@@ -32,6 +32,7 @@
 		<div id="client_orders">
 			<ui:repeat var="order" value="#{clientManagedBean.client.orders}">
 				<div class="info_block">
+						<span class="info"><b>Id: </b>#{order.id}</span>
 					<span class="info"><b>Pedido: </b>#{order.description}</span> <span
 						class="info"><b>Data: </b>#{order.requestDate}</span> <span
 						class="info"><b>Entrega: </b>#{order.deliveryDate}</span> <span

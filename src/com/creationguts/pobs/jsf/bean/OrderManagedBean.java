@@ -3,18 +3,26 @@ package com.creationguts.pobs.jsf.bean;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import org.apache.log4j.Logger;
 
+import com.creationguts.pobs.jpa.manager.UserEntityManager;
 import com.creationguts.pobs.jpa.model.Order;
 import com.creationguts.pobs.jpa.model.User;
 
 @ManagedBean
 @RequestScoped
 public class OrderManagedBean implements Serializable {
+	
+	@PostConstruct
+	public void init() {
+		this.newOrder = new Order();
+		this.owners = (new UserEntityManager()).getUsers();
+	}
 	
 	/**
 	 * Action
@@ -42,7 +50,7 @@ public class OrderManagedBean implements Serializable {
 	}
 	
 	public List<User> getOwners() {
-		return owners;
+		return this.owners;
 	}
 
 	public void setOwners(List<User> owners) {

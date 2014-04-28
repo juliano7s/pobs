@@ -1,5 +1,6 @@
 package com.creationguts.pobs.jpa.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable {
 	
 	@Id
 	@GeneratedValue(generator="order_inc")
@@ -98,7 +99,15 @@ public class Order {
 		return statusPt;
 	}
 	public void setStatus(String status) {
-		this.status = status;
+		if (status.equals("Em andamento")) {
+			this.status = "INPROGRESS";
+		} else if (status.equals("Pronto")) {
+			this.status = "READY";
+		} else if (status.equals("Entregue")) {
+			this.status = "DELIVERED";
+		} else {
+			this.status = "INPROGRESS";
+		}
 	}
 
 	private Long id;
@@ -111,4 +120,6 @@ public class Order {
 	private Float cost;
 	private Client client;
 	private User owner;
+	
+	private static final long serialVersionUID = 1710642303009857896L;
 }

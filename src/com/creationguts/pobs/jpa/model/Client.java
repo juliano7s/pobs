@@ -1,5 +1,6 @@
 package com.creationguts.pobs.jpa.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "clients")
-public class Client {
+public class Client implements Serializable {
 	
 	@Id
 	@GeneratedValue(generator="client_inc")
@@ -69,4 +70,6 @@ public class Client {
 	private String phone;
 	private String email;
 	private List<Order> orders;
+	
+	private static final long serialVersionUID = 3811526042595751057L;
 }
