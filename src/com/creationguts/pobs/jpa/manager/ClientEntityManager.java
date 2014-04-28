@@ -81,7 +81,7 @@ public class ClientEntityManager extends EntityManager<Client> {
 		this.closeEntityManager();
 	}
 
-	public void loadAll(Client client) {
+	public Client loadAll(Client client) {
 		logger.debug("Loading attributes from client: " + client);
 		this.getEntityManager().getTransaction().begin();
 		client = this.getEntityManager().merge(client);
@@ -92,6 +92,8 @@ public class ClientEntityManager extends EntityManager<Client> {
 										// http://stackoverflow.com/questions/21257947/reattaching-an-entity-to-lazy-load-a-collection-jpa-hibernate
 		this.getEntityManager().getTransaction().commit();
 		this.closeEntityManager();
+		
+		return client;
 	}
 
 	private static Logger logger = Logger.getLogger(ClientEntityManager.class);
