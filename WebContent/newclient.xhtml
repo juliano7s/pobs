@@ -23,7 +23,15 @@
 					<h:inputText id="client_cpf_input"
 						value="#{clientManagedBean.client.cpf}" />
 					<h:message for="client_cpf_input"></h:message>
-
+					
+					<h:outputText>Telefone: </h:outputText>
+					<h:panelGroup>
+					<ui:repeat value="#{clientManagedBean.phoneNumbers}" var="phone">
+						<div><h:inputText value="#{phone}" /></div>
+					</ui:repeat>
+					</h:panelGroup>
+					<h:commandButton value="+ Telefone" action="#{clientManagedBean.addPhoneNumber}" />
+					
 					<h:outputText>Telefone: </h:outputText>
 					<h:inputText id="client_phone_input"
 						value="#{clientManagedBean.client.phone}" />
@@ -40,7 +48,9 @@
 					<h:message for="client_email_input"></h:message>
 
 					<h:commandButton id="client_button"
-						action="#{clientManagedBean.saveClient}"></h:commandButton>
+						action="#{clientManagedBean.saveClient}">
+						<f:param id="client_id" value="#{clientManagedBean.client.id}"></f:param>	
+					</h:commandButton>
 				</h:panelGrid>
 			</div>
 		</h:form>

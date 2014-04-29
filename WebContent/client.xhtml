@@ -16,7 +16,9 @@
 				<span class="info"><b>Id: </b>#{clientManagedBean.client.id}</span>
 				<span class="info"><b>Nome: </b>#{clientManagedBean.client.name}</span>
 				<span class="info"><b>CPF: </b>#{clientManagedBean.client.cpf}</span>
-				<span class="info"><b>Telefone: </b>#{clientManagedBean.client.phone}</span>
+				<ui:repeat value="#{clientManagedBean.client.phoneNumbers}" var="phone">
+					<span class="info"><b>Telefone: </b>#{phone}</span>	
+				</ui:repeat>				
 				<span class="info"><b>Endereço: </b>#{clientManagedBean.client.address}</span>
 				<h:form>
 					<h:commandLink action="#{clientManagedBean.editClient}"

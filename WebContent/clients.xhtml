@@ -17,13 +17,14 @@
 					<ui:repeat var="client" value="#{clientManagedBean.clients}">
 						<div class="info_block">
 							<span class="info"><b>Nome: </b>#{client.name}</span> <span
-								class="info"><b>CPF: </b>#{client.cpf}</span> <br /> <span
-								class="info"><b>Telefone: </b>#{client.phone}</span> <span>
-								<h:form>
+								class="info"><b>CPF: </b>#{client.cpf}</span> <br />
+							<ui:repeat value="#{client.phoneNumbers}" var="phone">
+								<span class="info"><b>Telefone: </b>#{phone}</span>
+							</ui:repeat>
+							<span> <h:form>
 									<h:commandLink action="#{clientManagedBean.viewClient}"
 										value="Info">
-										<f:param name="clientId" 
-											value="#{client.id}" />
+										<f:param name="clientId" value="#{client.id}" />
 									</h:commandLink>
 								</h:form>
 							</span>

@@ -3,21 +3,24 @@ package com.creationguts.pobs.jpa.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "clients")
 public class Client implements Serializable {
 	
 	@Id
-	@GeneratedValue(generator="client_inc")
-	@GenericGenerator(name="client_inc", strategy="increment")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return this.id;
 	}
@@ -63,6 +66,16 @@ public class Client implements Serializable {
 		this.orders = orders;
 	}
 
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="client_phones", joinColumns=@JoinColumn(name="clientid"))
+	@Column(name="phone")
+	public List<String> getPhoneNumbers() {
+		return this.phoneNumbers;
+	}
+	public void setPhoneNumbers(List<String> phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
+	}
+
 	private Long id;
 	private String name;
 	private String cpf;
@@ -70,6 +83,7 @@ public class Client implements Serializable {
 	private String phone;
 	private String email;
 	private List<Order> orders;
+	private List<String> phoneNumbers;
 	
 	private static final long serialVersionUID = 3811526042595751057L;
 }

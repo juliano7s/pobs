@@ -19,3 +19,12 @@ CHANGE COLUMN `orderid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
 
 ALTER TABLE `pobs`.`owners`
 CHANGE COLUMN `ownerid` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
+
+CREATE TABLE `pobs`.`client_phones` (
+  `clientid` INT(10) UNSIGNED NOT NULL,
+  `phone` VARCHAR(45) NULL,
+  PRIMARY KEY (`clientid`));
+  
+  ALTER TABLE `pobs`.`client_phones` 
+CHANGE COLUMN `clientid` `clientid` INT(10) NOT NULL ,
+DROP PRIMARY KEY;

@@ -1,9 +1,11 @@
 package com.creationguts.pobs.jsf.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -50,6 +52,12 @@ public class ClientManagedBean implements Serializable {
 			} else {
 				logger.debug("wholeSearch matched no pattern.");
 				this.clients = cem.getClientsByName(this.wholeSearch);
+				for (Client c : this.clients) {
+					logger.debug("Phones loaded for client " + c.getName());
+					for (String p : c.getPhoneNumbers()) {
+						logger.debug(p);
+					}
+				}
 				view = "clients";
 			}
 		} catch (Exception e) {
@@ -65,7 +73,8 @@ public class ClientManagedBean implements Serializable {
 
 		if (this.client == null && this.clients == null) {
 			logger.debug("Client not found, going to new client view");
-			view = this.newClient();
+			this.newClient();
+			view = "newclient";
 		}
 
 		return view;
@@ -74,9 +83,11 @@ public class ClientManagedBean implements Serializable {
 	/**
 	 * Action: create new client to persist and redirect to newclient.xhtml
 	 */
-	public String newClient() {
+	@PostConstruct
+	public void newClient() {
 		this.client = new Client();
-		return "newclient";
+		this.phoneNumbers = new ArrayList<String>();
+		this.phoneNumbers.add("");
 	}
 
 	/**
@@ -89,27 +100,40 @@ public class ClientManagedBean implements Serializable {
 		logger.debug("Id: " + clientId);
 
 		for (Client c : this.clients) {
-			if (c.getId() == clientId)
+			if (c.getId() == clientId) {
 				this.client = c;
+				this.phoneNumbers = this.client.getPhoneNumbers();
+				logger.debug("Phones loaded: size = " + this.phoneNumbers.size());
+				for (String p : this.phoneNumbers) {
+					logger.debug(p);
+				}
+			}
 		}
 
 		return "newclient";
 	}
-	
+
 	/**
 	 * Action: choose client to view on client.xhtml
 	 */
 	public String viewClient() {
-		logger.debug("Editing client");
-		Long clientId = Long.parseLong(FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap().get("clientId"));
-		logger.debug("Id: " + clientId);
+		logger.debug("Viewing client");
+		if (this.client == null || this.client != null
+				&& this.client.getId() == 0) {
+			Long clientId = Long.parseLong(FacesContext.getCurrentInstance()
+					.getExternalContext().getRequestParameterMap()
+					.get("clientId"));
+			logger.debug("Id: " + clientId);
 
-		for (Client c : this.clients) {
-			if (c.getId() == clientId) {
-				this.client = (new ClientEntityManager()).loadAll(c);
+			for (Client c : this.clients) {
+				if (c.getId().equals(clientId)) {
+					this.client = c;
+				}
 			}
 		}
+		
+		logger.debug("Client to view: " + this.client.getName());
+		this.client = (new ClientEntityManager()).loadAll(this.client);
 
 		return "client";
 	}
@@ -119,17 +143,30 @@ public class ClientManagedBean implements Serializable {
 	 */
 	public String saveClient() {
 		logger.debug("Saving client on the database");
+		logger.debug("Phones submitted: " + this.phoneNumbers);
+		for (String p : this.phoneNumbers) {
+			logger.debug(p);
+		}
 		ClientEntityManager cem = new ClientEntityManager();
+		this.client.setPhoneNumbers(this.phoneNumbers);
 		cem.saveClient(this.client);
-		
+
 		UIComponent clientSaveButton = UIComponent
 				.getCurrentComponent(FacesContext.getCurrentInstance());
-		FacesContext.getCurrentInstance().addMessage(
-				clientSaveButton.getClientId(FacesContext
-						.getCurrentInstance()),
-				new FacesMessage("Client saved with id " + this.client.getId()));
+		FacesContext.getCurrentInstance()
+				.addMessage(
+						clientSaveButton.getClientId(FacesContext
+								.getCurrentInstance()),
+						new FacesMessage("Client saved with id "
+								+ this.client.getId()));
 
-		return "client";
+		return this.viewClient();
+	}
+
+	public String addPhoneNumber() {
+		logger.debug("Adding phone number");
+		this.phoneNumbers.add("");
+		return "newclient";
 	}
 
 	public String getWholeSearch() {
@@ -156,9 +193,19 @@ public class ClientManagedBean implements Serializable {
 		this.client = client;
 	}
 
+	public List<String> getPhoneNumbers() {
+		logger.debug("Getting phone numbers: size=" + this.phoneNumbers.size());
+		return this.phoneNumbers;
+	}
+
+	public void setPhoneNumbers(List<String> phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
+	}
+
 	private String wholeSearch;
 	private List<Client> clients;
 	private Client client;
+	private List<String> phoneNumbers;
 
 	private static Logger logger = Logger.getLogger(ClientManagedBean.class);
 	private static final long serialVersionUID = 2461829560777826670L;

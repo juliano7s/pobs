@@ -19,9 +19,9 @@
 					<h:outputText>Responsável: </h:outputText>
 
 					<h:selectOneMenu id="new_order_owner_input"
-						value="#{orderManagedBean.newOrder.owner}">
+						value="#{orderManagedBean.newOrderOwnerId}">
 						<f:selectItems value="#{orderManagedBean.owners}" var="owner"
-							itemValue="#{owner}" itemLabel="#{owner.name}" />
+							itemValue="#{owner.id}" itemLabel="#{owner.name}" />
 					</h:selectOneMenu>
 
 					<h:message for="new_order_owner_input"></h:message>

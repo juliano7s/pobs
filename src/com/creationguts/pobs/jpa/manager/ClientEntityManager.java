@@ -85,8 +85,6 @@ public class ClientEntityManager extends EntityManager<Client> {
 		logger.debug("Loading attributes from client: " + client);
 		this.getEntityManager().getTransaction().begin();
 		client = this.getEntityManager().merge(client);
-		// logger.debug("EM.contains = " +
-		// this.getEntityManager().contains(client));
 		if (client.getOrders() != null)
 			client.getOrders().size(); // Force collection to load. See
 										// http://stackoverflow.com/questions/21257947/reattaching-an-entity-to-lazy-load-a-collection-jpa-hibernate

@@ -6,20 +6,18 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "orders")
 public class Order implements Serializable {
 	
 	@Id
-	@GeneratedValue(generator="order_inc")
-	@GenericGenerator(name="order_inc", strategy="increment")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return this.id;
 	}

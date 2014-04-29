@@ -30,7 +30,13 @@ public class OrderManagedBean implements Serializable {
 	 */
 	public String saveNewOrder() {
 		logger.debug("Saving new order: ");
-		return null;
+		for (User o : this.owners) {
+			if (o.getId().equals(this.newOrderOwnerId)) {
+				this.newOrder.setOwner(o);
+			}
+		}
+		
+		return "index";
 	}
 	
 	public ClientManagedBean getClientManagedBean() {
@@ -49,6 +55,14 @@ public class OrderManagedBean implements Serializable {
 		this.newOrder = newOrder;
 	}
 	
+	public Long getNewOrderOwnerId() {
+		return this.newOrderOwnerId;
+	}
+
+	public void setNewOrderOwnerId(Long newOrderOwnerId) {
+		this.newOrderOwnerId = newOrderOwnerId;
+	}
+
 	public List<User> getOwners() {
 		return this.owners;
 	}
@@ -58,6 +72,7 @@ public class OrderManagedBean implements Serializable {
 	}
 
 	private Order newOrder;
+	private Long newOrderOwnerId;
 	private List<User> owners;
 	
 	@ManagedProperty(value="#{clientManagedBean}")
