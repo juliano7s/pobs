@@ -73,12 +73,14 @@ public class ClientEntityManager extends EntityManager<Client> {
 		return result.get(0);
 	}
 
-	public void saveClient(Client client) {
+	public Client saveClient(Client client) {
 		logger.debug("Saving client to the database: " + client);
 		this.getEntityManager().getTransaction().begin();
-		this.getEntityManager().merge(client);
+		client = this.getEntityManager().merge(client);
 		this.getEntityManager().getTransaction().commit();
 		this.closeEntityManager();
+		logger.debug(client + " saved to the database");
+		return client;
 	}
 
 	public Client loadAll(Client client) {

@@ -3,11 +3,19 @@ package com.creationguts.pobs.jpa.manager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.apache.log4j.Logger;
+
 import com.creationguts.pobs.Constants;
 
 public abstract class EntityManager<T> {
-
-	protected javax.persistence.EntityManager e;
+	
+	public T save(T entity) {
+		logger.debug("Saving entity " + entity);
+		this.getEntityManager().getTransaction().begin();
+		entity = this.getEntityManager().merge(entity);
+		this.getEntityManager().getTransaction().commit();
+		return entity;
+	}
 
 	protected javax.persistence.EntityManager getEntityManager() {
 		if (this.e == null) {
@@ -29,5 +37,8 @@ public abstract class EntityManager<T> {
 
 		this.e = null;
 	}
+	
+	private javax.persistence.EntityManager e;
+	private static Logger logger = Logger.getLogger(EntityManager.class);
 
 }

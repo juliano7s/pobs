@@ -20,14 +20,14 @@
 					<h:message for="client_name_input"></h:message>
 
 					<h:outputText>CPF: </h:outputText>
-					<h:inputText id="client_cpf_input"
+					<h:inputText id="client_cpf_input" validator="#{clientManagedBean.validateCpf}"
 						value="#{clientManagedBean.client.cpf}" />
 					<h:message for="client_cpf_input"></h:message>
 					
-					<h:outputText>Telefone: </h:outputText>
+					<h:outputText>Telefones: </h:outputText>
 					<h:panelGroup>
 					<ui:repeat value="#{clientManagedBean.phoneNumbers}" var="phone">
-						<div><h:inputText value="#{phone}" /></div>
+						<div><h:inputText value="#{phone.type}" />: <h:inputText value="#{phone.number}" /></div>
 					</ui:repeat>
 					</h:panelGroup>
 					<h:commandButton value="+ Telefone" action="#{clientManagedBean.addPhoneNumber}" />

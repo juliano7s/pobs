@@ -113,7 +113,7 @@ public class Order implements Serializable {
 	private Date requestDate;
 	private Date deliveryDate;
 	private Date readyDate;
-	private String status;
+	private String status = "INPROGRESS";
 	private Float value;
 	private Float cost;
 	private Client client;

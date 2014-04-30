@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -68,12 +67,19 @@ public class Client implements Serializable {
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="client_phones", joinColumns=@JoinColumn(name="clientid"))
-	@Column(name="phone")
-	public List<String> getPhoneNumbers() {
+	public List<Phone> getPhoneNumbers() {
 		return this.phoneNumbers;
 	}
-	public void setPhoneNumbers(List<String> phoneNumbers) {
+	public void setPhoneNumbers(List<Phone> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
+	}
+	
+	@Override
+	public String toString() {
+		return "Client [id=" + this.id + ", name=" + this.name + ", cpf=" + this.cpf
+				+ ", address=" + this.address + ", phone=" + this.phone + ", email="
+				+ this.email + ", orders=" + this.orders + ", phoneNumbers="
+				+ this.phoneNumbers + "]";
 	}
 
 	private Long id;
@@ -83,7 +89,7 @@ public class Client implements Serializable {
 	private String phone;
 	private String email;
 	private List<Order> orders;
-	private List<String> phoneNumbers;
+	private List<Phone> phoneNumbers;
 	
 	private static final long serialVersionUID = 3811526042595751057L;
 }

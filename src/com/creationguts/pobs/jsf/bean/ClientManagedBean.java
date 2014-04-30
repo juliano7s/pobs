@@ -11,11 +11,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 
 import com.creationguts.pobs.jpa.manager.ClientEntityManager;
 import com.creationguts.pobs.jpa.model.Client;
+import com.creationguts.pobs.jpa.model.Phone;
 
 @ManagedBean
 @SessionScoped
@@ -54,7 +56,7 @@ public class ClientManagedBean implements Serializable {
 				this.clients = cem.getClientsByName(this.wholeSearch);
 				for (Client c : this.clients) {
 					logger.debug("Phones loaded for client " + c.getName());
-					for (String p : c.getPhoneNumbers()) {
+					for (Phone p : c.getPhoneNumbers()) {
 						logger.debug(p);
 					}
 				}
@@ -73,6 +75,8 @@ public class ClientManagedBean implements Serializable {
 
 		if (this.client == null && this.clients == null) {
 			logger.debug("Client not found, going to new client view");
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Cliente não encontrado."));
 			this.newClient();
 			view = "newclient";
 		}
@@ -86,8 +90,8 @@ public class ClientManagedBean implements Serializable {
 	@PostConstruct
 	public void newClient() {
 		this.client = new Client();
-		this.phoneNumbers = new ArrayList<String>();
-		this.phoneNumbers.add("");
+		this.phoneNumbers = new ArrayList<Phone>();
+		this.phoneNumbers.add(new Phone());
 	}
 
 	/**
@@ -104,7 +108,7 @@ public class ClientManagedBean implements Serializable {
 				this.client = c;
 				this.phoneNumbers = this.client.getPhoneNumbers();
 				logger.debug("Phones loaded: size = " + this.phoneNumbers.size());
-				for (String p : this.phoneNumbers) {
+				for (Phone p : this.phoneNumbers) {
 					logger.debug(p);
 				}
 			}
@@ -119,7 +123,7 @@ public class ClientManagedBean implements Serializable {
 	public String viewClient() {
 		logger.debug("Viewing client");
 		if (this.client == null || this.client != null
-				&& this.client.getId() == 0) {
+				&& this. client.getId() == 0) {
 			Long clientId = Long.parseLong(FacesContext.getCurrentInstance()
 					.getExternalContext().getRequestParameterMap()
 					.get("clientId"));
@@ -141,23 +145,20 @@ public class ClientManagedBean implements Serializable {
 	/**
 	 * Action: save client to the database(insert/update)
 	 */
-	public String saveClient() {
+	public String saveClient() throws Throwable {
 		logger.debug("Saving client on the database");
 		logger.debug("Phones submitted: " + this.phoneNumbers);
-		for (String p : this.phoneNumbers) {
+		for (Phone p : this.phoneNumbers) {
 			logger.debug(p);
 		}
 		ClientEntityManager cem = new ClientEntityManager();
 		this.client.setPhoneNumbers(this.phoneNumbers);
-		cem.saveClient(this.client);
-
-		UIComponent clientSaveButton = UIComponent
-				.getCurrentComponent(FacesContext.getCurrentInstance());
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						clientSaveButton.getClientId(FacesContext
-								.getCurrentInstance()),
-						new FacesMessage("Client saved with id "
+		this.client = cem.save(this.client);
+	
+		logger.debug("Cliente salvo com id " + this.client.getId());
+		FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage("Cliente salvo com id "
 								+ this.client.getId()));
 
 		return this.viewClient();
@@ -165,8 +166,22 @@ public class ClientManagedBean implements Serializable {
 
 	public String addPhoneNumber() {
 		logger.debug("Adding phone number");
-		this.phoneNumbers.add("");
+		this.phoneNumbers.add(new Phone());
 		return "newclient";
+	}
+	
+	/**
+	 * Validator for CPF field
+	 * @param context
+	 * @param component
+	 * @param value
+	 * @throws ValidatorException
+	 */
+	public void validateCpf(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		String cpf = ((String) value).trim().replace(".", "").replace("-", "");
+		if (cpf.length() != 11) {
+			throw new ValidatorException(new FacesMessage("CPF deve ter 11 dígitos."));
+		}
 	}
 
 	public String getWholeSearch() {
@@ -193,20 +208,20 @@ public class ClientManagedBean implements Serializable {
 		this.client = client;
 	}
 
-	public List<String> getPhoneNumbers() {
+	public List<Phone> getPhoneNumbers() {
 		logger.debug("Getting phone numbers: size=" + this.phoneNumbers.size());
 		return this.phoneNumbers;
 	}
 
-	public void setPhoneNumbers(List<String> phoneNumbers) {
+	public void setPhoneNumbers(List<Phone> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
 	}
 
 	private String wholeSearch;
 	private List<Client> clients;
 	private Client client;
-	private List<String> phoneNumbers;
-
+	private List<Phone> phoneNumbers;
+	
 	private static Logger logger = Logger.getLogger(ClientManagedBean.class);
 	private static final long serialVersionUID = 2461829560777826670L;
 }

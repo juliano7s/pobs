@@ -6,20 +6,19 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
 	<ui:composition>
-		<h:form id="new_order_form">
-			<a id="hide_order" href="#">+ pedido</a>
+		<h:form id="new_order_form">			
 			<div id="new_order">
 				<h:panelGrid columns="3">
 									
 					<h:outputText>Descrição do pedido: </h:outputText>
 					<h:inputTextarea id="new_order_description_input" cols="25"
-						rows="5" value="#{orderManagedBean.newOrder.description}" />
+						rows="5" value="#{orderManagedBean.order.description}" />
 					<h:message for="new_order_description_input"></h:message>
 
 					<h:outputText>Responsável: </h:outputText>
 
 					<h:selectOneMenu id="new_order_owner_input"
-						value="#{orderManagedBean.newOrderOwnerId}">
+						value="#{orderManagedBean.orderOwnerId}">
 						<f:selectItems value="#{orderManagedBean.owners}" var="owner"
 							itemValue="#{owner.id}" itemLabel="#{owner.name}" />
 					</h:selectOneMenu>
@@ -27,28 +26,28 @@
 					<h:message for="new_order_owner_input"></h:message>
 
 					<h:outputText>Data do pedido: </h:outputText>
-					<h:inputText id="new_order_request_date_input" cols="10" value="#{orderManagedBean.newOrder.requestDate}" styleClass="datepicker">
+					<h:inputText id="new_order_request_date_input" cols="10" value="#{orderManagedBean.order.requestDate}" styleClass="datepicker">
 						<f:convertDateTime pattern="yyyy-mm-dd" dateStyle="short" type="date" />
 					</h:inputText>
 					<h:message for="new_order_request_date_input"></h:message>
 
 					<h:outputText>Data da entrega: </h:outputText>
-					<h:inputText id="new_order_delivery_date_input" cols="10" value="#{orderManagedBean.newOrder.deliveryDate}" styleClass="datepicker">
+					<h:inputText id="new_order_delivery_date_input" cols="10" value="#{orderManagedBean.order.deliveryDate}" styleClass="datepicker">
 						<f:convertDateTime pattern="yyyy-mm-dd" dateStyle="short" type="date" />
 					</h:inputText>
 					<h:message for="new_order_delivery_date_input"></h:message>
 
 					<h:outputText>Valor (R$): </h:outputText>
 					<h:inputText id="new_order_value_input" cols="10"
-						value="#{orderManagedBean.newOrder.value}" converter="javax.faces.Float" />
+						value="#{orderManagedBean.order.value}" converter="javax.faces.Float" />
 					<h:message for="new_order_value_input"></h:message>
 
 					<h:outputText>Custo (R$): </h:outputText>
 					<h:inputText id="new_order_cost_input" cols="10"
-						value="#{orderManagedBean.newOrder.cost}" converter="javax.faces.Float" />
+						value="#{orderManagedBean.order.cost}" converter="javax.faces.Float" />
 					<h:message for="new_order_cost_input"></h:message>
 
-					<h:commandButton id="new_order_button" value="Salvar"></h:commandButton>
+					<h:commandButton id="new_order_button" value="Salvar" action="#{orderManagedBean.saveNewOrder}"></h:commandButton>
 				</h:panelGrid>
 			</div>
 			<div id="new_order_message">

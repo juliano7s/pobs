@@ -35,3 +35,6 @@ body {
 .info {
 	margin: 0 5px 5px 0;
 }
+.info_message {
+	color: green;
+}
