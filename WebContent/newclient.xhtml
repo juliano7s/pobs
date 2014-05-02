@@ -27,7 +27,13 @@
 					<h:outputText>Telefones: </h:outputText>
 					<h:panelGroup>
 					<ui:repeat value="#{clientManagedBean.phoneNumbers}" var="phone">
-						<div><h:inputText value="#{phone.type}" />: <h:inputText value="#{phone.number}" /></div>
+						<div>
+							<h:selectOneMenu value="#{phone.type}">
+								<f:selectItem itemLabel="Celular" itemValue="Celular" />
+								<f:selectItem itemLabel="Casa"  itemValue="Casa" />
+								<f:selectItem itemLabel="Trabalho" itemValue="Trabalho" />
+							</h:selectOneMenu>: 
+							<h:inputText value="#{phone.number}" /></div>
 					</ui:repeat>
 					</h:panelGroup>
 					<h:commandButton value="+ Telefone" action="#{clientManagedBean.addPhoneNumber}" />

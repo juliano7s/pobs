@@ -19,13 +19,13 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
@@ -33,14 +33,14 @@ public class Order implements Serializable {
 	
 	@Column(name="request_date")
 	public Date getRequestDate() {
-		return this.requestDate;
+		return requestDate;
 	}
 	public void setRequestDate(Date requestDate) {
 		this.requestDate = requestDate;
 	}
 	@Column(name="delivery_date")
 	public Date getDeliveryDate() {
-		return this.deliveryDate;
+		return deliveryDate;
 	}
 	public void setDeliveryDate(Date deliveryDate) {
 		this.deliveryDate = deliveryDate;
@@ -48,19 +48,19 @@ public class Order implements Serializable {
 	
 	@Column(name="ready_date")
 	public Date getReadyDate() {
-		return this.readyDate;
+		return readyDate;
 	}
 	public void setReadyDate(Date readyDate) {
 		this.readyDate = readyDate;
 	}
 	public Float getValue() {
-		return this.value;
+		return value;
 	}
 	public void setValue(Float value) {
 		this.value = value;
 	}
 	public Float getCost() {
-		return this.cost;
+		return cost;
 	}
 	public void setCost(Float cost) {
 		this.cost = cost;
@@ -69,7 +69,7 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="clientid", nullable=false)
 	public Client getClient() {
-		return this.client;
+		return client;
 	}
 	public void setClient(Client client) {
 		this.client = client;
@@ -78,34 +78,47 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="ownerid")
 	public User getOwner() {
-		return this.owner;
+		return owner;
 	}
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 
 	public String getStatus() {
-		String statusPt = "ERROR";
-		if (this.status.equals("INPROGRESS")) {
-			statusPt = "Em andamento";
-		} else if (this.status.equals("READY")) {
-			statusPt = "Pronto";
-		} else if (this.status.equals("DELIVERED")) {
-			statusPt = "Entregue";
-		}
-		
-		return statusPt;
+		return status;
 	}
 	public void setStatus(String status) {
-		if (status.equals("Em andamento")) {
-			this.status = "INPROGRESS";
-		} else if (status.equals("Pronto")) {
-			this.status = "READY";
-		} else if (status.equals("Entregue")) {
-			this.status = "DELIVERED";
-		} else {
-			this.status = "INPROGRESS";
+		this.status = status;
+	}
+	
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", description=" + description
+				+ ", requestDate=" + requestDate + ", deliveryDate="
+				+ deliveryDate + ", readyDate=" + readyDate + ", status="
+				+ status + ", value=" + value + ", cost=" + cost + ", owner="
+				+ owner + "]";
+	}
+	
+	public enum Status {
+	    INPROGRESS("INPROGRESS"),
+	    READY("READY"),
+	    DELIVERED("DELIVERED");
+
+	    private final String name;
+
+	    private Status(String s) {
+	        name = s;
+	    }
+
+		public boolean equalsName(String otherName) {
+			return (otherName == null) ? false : name.equals(otherName);
 		}
+
+	    @Override
+		public String toString(){
+	       return name;
+	    }
 	}
 
 	private Long id;
@@ -113,7 +126,7 @@ public class Order implements Serializable {
 	private Date requestDate;
 	private Date deliveryDate;
 	private Date readyDate;
-	private String status = "INPROGRESS";
+	private String status = Status.INPROGRESS.toString();
 	private Float value;
 	private Float cost;
 	private Client client;

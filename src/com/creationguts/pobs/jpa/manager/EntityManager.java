@@ -10,10 +10,12 @@ import com.creationguts.pobs.Constants;
 public abstract class EntityManager<T> {
 	
 	public T save(T entity) {
-		logger.debug("Saving entity " + entity);
 		this.getEntityManager().getTransaction().begin();
 		entity = this.getEntityManager().merge(entity);
+		logger.debug("Saving entity " + entity);
 		this.getEntityManager().getTransaction().commit();
+		this.closeEntityManager();
+		
 		return entity;
 	}
 

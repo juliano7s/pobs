@@ -17,6 +17,8 @@ import org.apache.log4j.Logger;
 
 import com.creationguts.pobs.jpa.manager.ClientEntityManager;
 import com.creationguts.pobs.jpa.model.Client;
+import com.creationguts.pobs.jpa.model.Order;
+import com.creationguts.pobs.jpa.model.Order.Status;
 import com.creationguts.pobs.jpa.model.Phone;
 
 @ManagedBean
@@ -28,13 +30,13 @@ public class ClientManagedBean implements Serializable {
 	 */
 	public String executeWholeSearch() {
 		logger.debug("Executing whole client search.");
-		logger.debug("Search string: " + this.wholeSearch);
+		logger.debug("Search string: " + wholeSearch);
 		logger.debug("Clearing client and client list from bean");
-		this.client = null;
-		this.clients = null;
+		client = null;
+		clients = null;
 
-		this.wholeSearch = this.wholeSearch.replace("-", "");
-		this.wholeSearch = this.wholeSearch.replace(".", "");
+		wholeSearch = wholeSearch.replace("-", "");
+		wholeSearch = wholeSearch.replace(".", "");
 		String view = "";
 
 		Pattern phoneNumberPattern1 = Pattern.compile("\\d{2}|\\d{8}");
@@ -42,25 +44,23 @@ public class ClientManagedBean implements Serializable {
 
 		ClientEntityManager cem = new ClientEntityManager();
 		try {
-			if (phoneNumberPattern1.matcher(this.wholeSearch).matches()) {
+			if (phoneNumberPattern1.matcher(wholeSearch).matches()) {
 				logger.debug("wholeSearch matched phoneNumberPattern1 "
 						+ phoneNumberPattern1);
-				this.client = cem.getClientByPhone(this.wholeSearch);
+				client = cem.getClientByPhone(wholeSearch);
 				view = "client";
-			} else if (cpfPattern1.matcher(this.wholeSearch).matches()) {
+			} else if (cpfPattern1.matcher(wholeSearch).matches()) {
 				logger.debug("wholeSearch matched cpfPattern1 " + cpfPattern1);
-				this.client = cem.getClientByCpf(this.wholeSearch);
+				client = cem.getClientByCpf(wholeSearch);
 				view = "client";
 			} else {
 				logger.debug("wholeSearch matched no pattern.");
-				this.clients = cem.getClientsByName(this.wholeSearch);
-				for (Client c : this.clients) {
-					logger.debug("Phones loaded for client " + c.getName());
-					for (Phone p : c.getPhoneNumbers()) {
-						logger.debug(p);
-					}
-				}
-				view = "clients";
+				clients = cem.getClientsByName(wholeSearch);
+				if (clients.size() == 1) {
+					client = clients.get(0);
+					view = viewClient();
+				} else
+					view = "clients";
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -73,12 +73,18 @@ public class ClientManagedBean implements Serializable {
 					new FacesMessage(e.getMessage()));
 		}
 
-		if (this.client == null && this.clients == null) {
+		if (client == null && clients == null) {
 			logger.debug("Client not found, going to new client view");
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Cliente não encontrado."));
-			this.newClient();
+			newClient();
 			view = "newclient";
+		} else {
+			String foundClients = (clients.size() > 1) ? " clientes econtrados."
+					: " cliente econtrado.";
+			logger.debug(clients.size() + " clients found.");
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(clients.size() + foundClients));
 		}
 
 		return view;
@@ -89,9 +95,9 @@ public class ClientManagedBean implements Serializable {
 	 */
 	@PostConstruct
 	public void newClient() {
-		this.client = new Client();
-		this.phoneNumbers = new ArrayList<Phone>();
-		this.phoneNumbers.add(new Phone());
+		client = new Client();
+		phoneNumbers = new ArrayList<Phone>();
+		phoneNumbers.add(new Phone());
 	}
 
 	/**
@@ -103,14 +109,10 @@ public class ClientManagedBean implements Serializable {
 				.getExternalContext().getRequestParameterMap().get("clientId"));
 		logger.debug("Id: " + clientId);
 
-		for (Client c : this.clients) {
+		for (Client c : clients) {
 			if (c.getId() == clientId) {
-				this.client = c;
-				this.phoneNumbers = this.client.getPhoneNumbers();
-				logger.debug("Phones loaded: size = " + this.phoneNumbers.size());
-				for (Phone p : this.phoneNumbers) {
-					logger.debug(p);
-				}
+				client = c;
+				phoneNumbers = client.getPhoneNumbers();
 			}
 		}
 
@@ -122,22 +124,22 @@ public class ClientManagedBean implements Serializable {
 	 */
 	public String viewClient() {
 		logger.debug("Viewing client");
-		if (this.client == null || this.client != null
-				&& this. client.getId() == 0) {
+		if (client == null || client != null
+				&& client.getId() == 0) {
 			Long clientId = Long.parseLong(FacesContext.getCurrentInstance()
 					.getExternalContext().getRequestParameterMap()
 					.get("clientId"));
 			logger.debug("Id: " + clientId);
 
-			for (Client c : this.clients) {
+			for (Client c : clients) {
 				if (c.getId().equals(clientId)) {
-					this.client = c;
+					client = c;
 				}
 			}
 		}
 		
-		logger.debug("Client to view: " + this.client.getName());
-		this.client = (new ClientEntityManager()).loadAll(this.client);
+		logger.debug("Client to view: " + client.getName());
+		client = (new ClientEntityManager()).loadAll(client);
 
 		return "client";
 	}
@@ -147,26 +149,26 @@ public class ClientManagedBean implements Serializable {
 	 */
 	public String saveClient() throws Throwable {
 		logger.debug("Saving client on the database");
-		logger.debug("Phones submitted: " + this.phoneNumbers);
-		for (Phone p : this.phoneNumbers) {
+		logger.debug("Phones submitted: " + phoneNumbers);
+		for (Phone p : phoneNumbers) {
 			logger.debug(p);
 		}
 		ClientEntityManager cem = new ClientEntityManager();
-		this.client.setPhoneNumbers(this.phoneNumbers);
-		this.client = cem.save(this.client);
+		client.setPhoneNumbers(phoneNumbers);
+		client = cem.save(client);
 	
-		logger.debug("Cliente salvo com id " + this.client.getId());
+		logger.debug("Cliente salvo com id " + client.getId());
 		FacesContext.getCurrentInstance().addMessage(
 						null,
 						new FacesMessage("Cliente salvo com id "
-								+ this.client.getId()));
+								+ client.getId()));
 
-		return this.viewClient();
+		return viewClient();
 	}
 
 	public String addPhoneNumber() {
 		logger.debug("Adding phone number");
-		this.phoneNumbers.add(new Phone());
+		phoneNumbers.add(new Phone());
 		return "newclient";
 	}
 	
@@ -185,15 +187,15 @@ public class ClientManagedBean implements Serializable {
 	}
 
 	public String getWholeSearch() {
-		return this.wholeSearch;
+		return wholeSearch;
 	}
 
 	public void setWholeSearch(String search) {
-		this.wholeSearch = search;
+		wholeSearch = search;
 	}
 
 	public List<Client> getClients() {
-		return this.clients;
+		return clients;
 	}
 
 	public void setClients(List<Client> clients) {
@@ -201,7 +203,7 @@ public class ClientManagedBean implements Serializable {
 	}
 
 	public Client getClient() {
-		return this.client;
+		return client;
 	}
 
 	public void setClient(Client client) {
@@ -209,13 +211,45 @@ public class ClientManagedBean implements Serializable {
 	}
 
 	public List<Phone> getPhoneNumbers() {
-		logger.debug("Getting phone numbers: size=" + this.phoneNumbers.size());
-		return this.phoneNumbers;
+		logger.debug("Getting phone numbers: size=" + phoneNumbers.size());
+		return phoneNumbers;
 	}
 
 	public void setPhoneNumbers(List<Phone> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
 	}
+	
+	public List<Order> getOrdersInProgress() {
+		logger.debug("Getting orders in progress from client " + client.getName());
+		List<Order> list = new ArrayList<Order>();
+		if (client != null) {
+			for (Order o : client.getOrders()) {
+				logger.debug("Checking order status: " + o.getStatus());
+				if (o.getStatus().equals(Status.INPROGRESS.toString())) {
+					list.add(o);
+				}
+			}
+		}
+		return list;
+	}
+	
+	public void setOrdersInProgress(List<Order> list) {}
+	
+	public List<Order> getOrdersReady() {
+		logger.debug("Getting orders ready from client " + client.getName());
+		List<Order> list = new ArrayList<Order>();
+		if (client != null) {
+			for (Order o : client.getOrders()) {
+				logger.debug("Checking order status: " + o.getStatus());
+				if (o.getStatus().equals(Status.READY.toString())) {
+					list.add(o);
+				}
+			}
+		}
+		return list;
+	}
+	
+	public void setOrdersReady(List<Order> list) {}
 
 	private String wholeSearch;
 	private List<Client> clients;

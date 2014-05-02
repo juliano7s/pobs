@@ -9,17 +9,17 @@
 
 <ui:composition template="templates/_template.xhtml">
 	<ui:define name="section_title"></ui:define>
-	<ui:define name="content">
-		<h:form id="edit_order_form">
-			<div id="edit_order">
-				<div id="edit_order_menu">
-					<span><h:commandLink value="Pronto" /> | </span>
-					<span><h:commandLink value="Entregue" /> | </span>
-				</div>
-				<h:outputText>#{orderManagedBean.order.id}</h:outputText>
-				<ui:include src="templates/new_order_form.xhtml"></ui:include>
+	<ui:define name="content">		
+		<div id="edit_order">
+			<h:form id="edit_order_form">
+			<div id="edit_order_menu">
+				<span><h:commandLink value="Pronto" /> | </span>
+				<span><h:commandLink value="Entregue" /> | </span>
 			</div>
-		</h:form>
+			</h:form>
+			<h:outputText>#{orderManagedBean.order.id}</h:outputText>
+			<ui:include src="templates/new_order_form.xhtml"></ui:include>
+		</div>		
 	</ui:define>
 </ui:composition>
 </html>

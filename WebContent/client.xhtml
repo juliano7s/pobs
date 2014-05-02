@@ -31,8 +31,29 @@
 		<a id="hide_order" href="#">+ pedido</a>
 		<ui:include src="templates/new_order_form.xhtml"></ui:include>
 
-		<div id="client_orders">
-			<ui:repeat var="order" value="#{clientManagedBean.client.orders}">
+		<div id="client_orders_inprogress">
+			<ui:repeat var="order" value="#{clientManagedBean.ordersInProgress}">
+				<div class="info_block">
+						<span class="info"><b>Id: </b>#{order.id}</span>
+					<span class="info"><b>Pedido: </b>#{order.description}</span> <span
+						class="info"><b>Data: </b><h:outputText value="#{order.requestDate}"><f:convertDateTime pattern="yyyy-mm-dd" type="date" /></h:outputText></span> <span
+						class="info"><b>Entrega: </b><h:outputText value="#{order.deliveryDate}"><f:convertDateTime pattern="yyyy-mm-dd" type="date" /></h:outputText></span> <span
+						class="info"><b>Custo: </b>#{order.cost}</span> <span class="info"><b>Valor:
+					</b>#{order.value}</span> <span class="info"><b>Status: </b>#{order.status}</span>
+					<span class="info"><b>Responsável: </b>#{order.owner.name}</span>
+					<h:form>
+					<h:commandLink action="#{orderManagedBean.editOrder}"
+						value="Editar">
+						<f:param name="orderId" value="#{order.id}" />
+					</h:commandLink>
+				</h:form>
+				</div>
+				<br />
+			</ui:repeat>
+		</div>
+		
+		<div id="client_orders_ready">
+			<ui:repeat var="order" value="#{clientManagedBean.ordersReady}">
 				<div class="info_block">
 						<span class="info"><b>Id: </b>#{order.id}</span>
 					<span class="info"><b>Pedido: </b>#{order.description}</span> <span

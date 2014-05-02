@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
-import com.creationguts.pobs.jpa.manager.ClientEntityManager;
 import com.creationguts.pobs.jpa.manager.OrderEntityManager;
 import com.creationguts.pobs.jpa.manager.UserEntityManager;
 import com.creationguts.pobs.jpa.model.Order;
@@ -24,8 +23,8 @@ public class OrderManagedBean implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		this.order = new Order();
-		this.owners = (new UserEntityManager()).getUsers();
+		order = new Order();
+		owners = (new UserEntityManager()).getUsers();
 	}
 	
 	public String editOrder() {
@@ -34,9 +33,9 @@ public class OrderManagedBean implements Serializable {
 				.getExternalContext().getRequestParameterMap().get("orderId"));
 		logger.debug("Id: " + orderId);
 		
-		for (Order o : this.clientManagedBean.getClient().getOrders()) {
+		for (Order o : clientManagedBean.getClient().getOrders()) {
 			if (o.getId().equals(orderId))
-				this.order = o;
+				order = o;
 		}
 		
 		return "edit_order";
@@ -47,28 +46,32 @@ public class OrderManagedBean implements Serializable {
 	 * @return
 	 */
 	public String saveOrder() {
-		logger.debug("Saving new order: ");
-		for (User o : this.owners) {
-			if (o.getId().equals(this.orderOwnerId)) {
-				this.order.setOwner(o);
+		logger.debug("Saving new order: " + order);
+		for (User o : owners) {
+			if (o.getId().equals(orderOwnerId)) {
+				if (o.getName().equals("Nenhum"))
+					order.setOwner(null);
+				else
+					order.setOwner(o);
 			}
 		}
 		OrderEntityManager oem = new OrderEntityManager();
-		this.order.setClient(this.clientManagedBean.getClient());
-		oem.save(this.order);
+		order.setClient(clientManagedBean.getClient());
+		oem.save(order);
 		
 		FacesContext.getCurrentInstance().addMessage(
 				null,
-				new FacesMessage("Pedido adicionado para o cliente "
-						+ this.order.getClient().getName()));
-		
-		ClientEntityManager cem = new ClientEntityManager();
-		this.clientManagedBean.setClient(cem.loadAll(this.order.getClient()));
-		return "client";
+				new FacesMessage("Pedido salvo com sucesso para o cliente: "
+						+ order.getClient().getName()));
+				
+		clientManagedBean.setClient(order.getClient());
+		logger.debug("Order saved. Clearing order bean.");
+		order = new Order();
+		return clientManagedBean.viewClient();
 	}
 	
 	public ClientManagedBean getClientManagedBean() {
-		return this.clientManagedBean;
+		return clientManagedBean;
 	}
 
 	public void setClientManagedBean(ClientManagedBean clientManagedBean) {
@@ -76,7 +79,7 @@ public class OrderManagedBean implements Serializable {
 	}
 	
 	public Order getOrder() {
-		return this.order;
+		return order;
 	}
 
 	public void setOrder(Order order) {
@@ -84,7 +87,7 @@ public class OrderManagedBean implements Serializable {
 	}
 	
 	public Long getOrderOwnerId() {
-		return this.orderOwnerId;
+		return orderOwnerId;
 	}
 
 	public void setOrderOwnerId(Long orderOwnerId) {
@@ -92,7 +95,7 @@ public class OrderManagedBean implements Serializable {
 	}
 
 	public List<User> getOwners() {
-		return this.owners;
+		return owners;
 	}
 
 	public void setOwners(List<User> owners) {
