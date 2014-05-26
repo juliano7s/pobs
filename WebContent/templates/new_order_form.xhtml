@@ -49,6 +49,13 @@
 							<f:selectItems value="#{orderManagedBean.owners}" var="owner"
 								itemValue="#{owner.id}" itemLabel="#{owner.name}" />
 						</h:selectOneMenu>
+						
+						<h:outputText>Status: </h:outputText>
+						<h:selectOneMenu id="new_order_status_input"
+							value="#{orderManagedBean.order.status}">							
+							<f:selectItems value="#{orderManagedBean.statuses}" var="status"
+								itemValue="#{status}" itemLabel="#{status.viewName}" />
+						</h:selectOneMenu>
 
 						<h:commandButton id="new_order_button" value="Salvar"
 							action="#{orderManagedBean.saveOrder}"></h:commandButton>

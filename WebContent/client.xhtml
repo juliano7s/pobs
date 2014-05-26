@@ -39,7 +39,7 @@
 						class="info"><b>Data: </b><h:outputText value="#{order.requestDate}"><f:convertDateTime pattern="yyyy-mm-dd" type="date" /></h:outputText></span> <span
 						class="info"><b>Entrega: </b><h:outputText value="#{order.deliveryDate}"><f:convertDateTime pattern="yyyy-mm-dd" type="date" /></h:outputText></span> <span
 						class="info"><b>Custo: </b>#{order.cost}</span> <span class="info"><b>Valor:
-					</b>#{order.value}</span> <span class="info"><b>Status: </b>#{order.status}</span>
+					</b>#{order.value}</span> <span class="info"><b>Status: </b>#{order.status.viewName}</span>
 					<span class="info"><b>Responsável: </b>#{order.owner.name}</span>
 					<h:form>
 					<h:commandLink action="#{orderManagedBean.editOrder}"
@@ -60,7 +60,7 @@
 						class="info"><b>Data: </b>#{order.requestDate}</span> <span
 						class="info"><b>Entrega: </b>#{order.deliveryDate}</span> <span
 						class="info"><b>Custo: </b>#{order.cost}</span> <span class="info"><b>Valor:
-					</b>#{order.value}</span> <span class="info"><b>Status: </b>#{order.status}</span>
+					</b>#{order.value}</span> <span class="info"><b>Status: </b>#{order.status.viewName}</span>
 					<span class="info"><b>Responsável: </b>#{order.owner.name}</span>
 					<h:form>
 					<h:commandLink action="#{orderManagedBean.editOrder}"

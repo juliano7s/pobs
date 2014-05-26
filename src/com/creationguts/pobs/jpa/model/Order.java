@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -84,10 +86,11 @@ public class Order implements Serializable {
 		this.owner = owner;
 	}
 
-	public String getStatus() {
+	@Enumerated(EnumType.STRING)
+	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	
@@ -114,6 +117,18 @@ public class Order implements Serializable {
 		public boolean equalsName(String otherName) {
 			return (otherName == null) ? false : name.equals(otherName);
 		}
+		
+		public String getViewName() {
+			if (equals(Status.INPROGRESS)) {
+				return "Em andamento";
+			} else if (equals(Status.READY)) {
+				return "Pronto";
+			} else if (equals(Status.DELIVERED)) {
+				return "Entregue";
+			} else {
+				return "ERRO";
+			}
+		}
 
 	    @Override
 		public String toString(){
@@ -126,7 +141,7 @@ public class Order implements Serializable {
 	private Date requestDate;
 	private Date deliveryDate;
 	private Date readyDate;
-	private String status = Status.INPROGRESS.toString();
+	private Status status = Status.INPROGRESS;
 	private Float value;
 	private Float cost;
 	private Client client;

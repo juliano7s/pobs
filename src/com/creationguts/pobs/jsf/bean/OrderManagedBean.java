@@ -1,6 +1,7 @@
 package com.creationguts.pobs.jsf.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,8 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+
+import scala.actors.threadpool.Arrays;
 
 import com.creationguts.pobs.jpa.manager.OrderEntityManager;
 import com.creationguts.pobs.jpa.manager.UserEntityManager;
@@ -25,6 +28,7 @@ public class OrderManagedBean implements Serializable {
 	public void init() {
 		order = new Order();
 		owners = (new UserEntityManager()).getUsers();
+		statuses = new ArrayList<Order.Status>(Arrays.asList(Order.Status.values()));
 	}
 	
 	public String editOrder() {
@@ -102,9 +106,18 @@ public class OrderManagedBean implements Serializable {
 		this.owners = owners;
 	}
 
+	public List<Order.Status> getStatuses() {
+		return statuses;
+	}
+
+	public void setStatuses(List<Order.Status> statuses) {
+		this.statuses = statuses;
+	}
+
 	private Order order;
 	private Long orderOwnerId;
 	private List<User> owners;
+	private List<Order.Status> statuses;
 	
 	@ManagedProperty(value="#{clientManagedBean}")
 	private ClientManagedBean clientManagedBean;

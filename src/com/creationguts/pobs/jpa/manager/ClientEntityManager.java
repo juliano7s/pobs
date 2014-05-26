@@ -73,7 +73,7 @@ public class ClientEntityManager extends EntityManager<Client> {
 	public Client loadAll(Client client) {
 		getEntityManager().getTransaction().begin();
 		client = getEntityManager().createQuery(
-				"from Client c inner join fetch c.orders o where c.id = "
+				"from Client c left join fetch c.orders o where c.id = "
 						+ client.getId(), Client.class).getSingleResult();
 		getEntityManager().getTransaction().commit();
 		closeEntityManager();

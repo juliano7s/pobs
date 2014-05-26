@@ -225,7 +225,7 @@ public class ClientManagedBean implements Serializable {
 		if (client != null) {
 			for (Order o : client.getOrders()) {
 				logger.debug("Checking order status: " + o.getStatus());
-				if (o.getStatus().equals(Status.INPROGRESS.toString())) {
+				if (o.getStatus().equals(Status.INPROGRESS)) {
 					list.add(o);
 				}
 			}
@@ -241,7 +241,7 @@ public class ClientManagedBean implements Serializable {
 		if (client != null) {
 			for (Order o : client.getOrders()) {
 				logger.debug("Checking order status: " + o.getStatus());
-				if (o.getStatus().equals(Status.READY.toString())) {
+				if (o.getStatus().equals(Status.READY)){
 					list.add(o);
 				}
 			}
