@@ -73,7 +73,7 @@ public class ClientManagedBean implements Serializable {
 					new FacesMessage(e.getMessage()));
 		}
 
-		if (client == null && clients == null) {
+		if (client == null && clients == null || clients.size() == 0) {
 			logger.debug("Client not found, going to new client view");
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Cliente não encontrado."));
@@ -81,8 +81,8 @@ public class ClientManagedBean implements Serializable {
 			view = "newclient";
 		} else {
 			String foundClients = (clients.size() > 1) ? " clientes econtrados."
-					: " cliente econtrado.";
-			logger.debug(clients.size() + " clients found.");
+					: " cliente encontrado.";
+			logger.debug(clients.size() + foundClients);
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(clients.size() + foundClients));
 		}
