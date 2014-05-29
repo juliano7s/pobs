@@ -14,16 +14,36 @@
 			<h:panelGroup>
 				<div>
 					<h4>Entregas atrasadas:</h4>
+					<h:form>
+						<h:panelGrid columns="5">
+						<h:outputText>De: </h:outputText>
+						<h:inputText id="late_orders_begin_date_input" cols="10"
+							value="#{orderManagedBean.lateOrdersBegin}"
+							styleClass="datepicker">
+							<f:convertDateTime pattern="dd/MM/yyyy"	type="date" />
+						</h:inputText>
+						<h:outputText>Até: </h:outputText>
+						<h:inputText id="late_orders_end_date_input" cols="10"
+							value="#{orderManagedBean.lateOrdersEnd}"
+							styleClass="datepicker">
+							<f:convertDateTime pattern="dd/MM/yyyy"	type="date" />
+						</h:inputText>
+						<h:commandButton id="late_orders_button" value="Ok"
+							action="#{orderManagedBean.loadLateOrders}"></h:commandButton>
+					</h:panelGrid>
+					</h:form>
 					<ui:repeat var="keyDate" value="#{orderManagedBean.lateOrdersKeys}">
-						<div><h2>#{keyDate}</h2></div>
+						<h3><h:outputText value="#{keyDate}" >
+              				<f:convertDateTime pattern="dd/MM/yyyy" />
+ 						</h:outputText></h3>
 						<ui:repeat var="order" value="#{orderManagedBean.lateOrders[keyDate]}">
 							<div class="info_block">
 								<span class="info"><b>Id: </b>#{order.id}</span> <span
 									class="info"><b>Pedido: </b>#{order.description}</span> <span
 									class="info"><b>Data: </b>#{order.requestDate}</span> <span
 									class="info"><b>Entrega: </b>#{order.deliveryDate}</span> <span
-									class="info"><b>Custo: </b>#{order.cost}</span> <span
-									class="info"><b>Valor: </b>#{order.value}</span> <span
+									class="info"><b>Custo: </b>R$ #{order.cost}</span> <span
+									class="info"><b>Valor: </b>R$ #{order.value}</span> <span
 									class="info"><b>Status: </b>#{order.status.viewName}</span> <span
 									class="info"><b>Responsável: </b>#{order.owner.name}</span>
 								<h:form>
@@ -42,8 +62,28 @@
 			<h:panelGroup>
 				<div>
 					<h4>Próximas entregas:</h4>
+					<h:form>
+					<h:panelGrid columns="5">
+						<h:outputText>De: </h:outputText>
+						<h:inputText id="next_orders_begin_date_input" cols="10"
+							value="#{orderManagedBean.nextOrdersBegin}"
+							styleClass="datepicker">
+							<f:convertDateTime pattern="dd/MM/yyyy"	type="date" />
+						</h:inputText>
+						<h:outputText>Até: </h:outputText>
+						<h:inputText id="next_orders_end_date_input" cols="10"
+							value="#{orderManagedBean.nextOrdersEnd}"
+							styleClass="datepicker">
+							<f:convertDateTime pattern="dd/MM/yyyy"	type="date" />
+						</h:inputText>
+						<h:commandButton id="next_orders_button" value="Ok"
+							action="#{orderManagedBean.loadNextOrders}"></h:commandButton>
+					</h:panelGrid>
+					</h:form>
 					<ui:repeat var="keyDate" value="#{orderManagedBean.nextOrdersKeys}">
-						<div><h2>#{keyDate}</h2></div>
+						<h3><h:outputText value="#{keyDate}" >
+              				<f:convertDateTime pattern="dd/MM/yyyy" />
+ 						</h:outputText></h3>
 						<ui:repeat var="order" value="#{orderManagedBean.nextOrders[keyDate]}">
 							<div class="info_block">
 								<span class="info"><b>Id: </b>#{order.id}</span> <span

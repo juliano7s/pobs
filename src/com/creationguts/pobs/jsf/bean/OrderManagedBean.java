@@ -27,11 +27,56 @@ import com.creationguts.pobs.jpa.model.User;
 @RequestScoped
 public class OrderManagedBean implements Serializable {
 	
+	public Date getLateOrdersEnd() {
+		return lateOrdersEnd;
+	}
+
+	public void setLateOrdersEnd(Date lateOrdersEnd) {
+		this.lateOrdersEnd = lateOrdersEnd;
+	}
+
+	public Date getNextOrdersEnd() {
+		return nextOrdersEnd;
+	}
+
+	public void setNextOrdersEnd(Date nextOrdersEnd) {
+		this.nextOrdersEnd = nextOrdersEnd;
+	}
+
+	public Date getLateOrdersBegin() {
+		return lateOrdersBegin;
+	}
+
+	public void setLateOrdersBegin(Date lateOrdersBegin) {
+		this.lateOrdersBegin = lateOrdersBegin;
+	}
+
+	public Date getNextOrdersBegin() {
+		return nextOrdersBegin;
+	}
+
+	public void setNextOrdersBegin(Date nextOrdersBegin) {
+		this.nextOrdersBegin = nextOrdersBegin;
+	}
+
 	@PostConstruct
 	public void init() {
 		order = new Order();
 		owners = (new UserEntityManager()).getUsers();
 		statuses = new ArrayList<Order.Status>(Arrays.asList(Order.Status.values()));
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DAY_OF_MONTH, -7);
+		lateOrdersBegin = c.getTime();
+		c.setTime(new Date());
+		c.add(Calendar.DAY_OF_MONTH, -1);
+		lateOrdersEnd = c.getTime();
+		nextOrdersBegin = new Date();
+		c.setTime(new Date());
+		c.add(Calendar.DAY_OF_MONTH, 7);
+		nextOrdersEnd = c.getTime();
+		logger.debug("Init dates: " + lateOrdersBegin + " " + lateOrdersEnd
+				+ " " + nextOrdersBegin + " " + nextOrdersEnd);
 	}
 	
 	public String editOrder() {
@@ -75,6 +120,16 @@ public class OrderManagedBean implements Serializable {
 		logger.debug("Order saved. Clearing order bean.");
 		order = new Order();
 		return clientManagedBean.viewClient();
+	}
+	
+	public String loadLateOrders() {
+		getLateOrders();
+		return "index";
+	}
+	
+	public String loadNextOrders() {
+		getNextOrders();
+		return "index";
 	}
 			
 	public ClientManagedBean getClientManagedBean() {
@@ -124,11 +179,7 @@ public class OrderManagedBean implements Serializable {
 	public Map<Date, List<Order>> getLateOrders() {
 		OrderEntityManager oem = new OrderEntityManager();
 		if (lateOrders == null || lateOrders.size() <= 0) {
-			Date begin = new Date();
-			Calendar c = Calendar.getInstance();
-			c.setTime(begin);
-			c.add(Calendar.DAY_OF_MONTH, -1);
-			lateOrders = oem.getOrders(null, c.getTime(), null, null,
+			lateOrders = oem.getOrders(lateOrdersBegin, lateOrdersEnd, null, null,
 					Order.Status.INPROGRESS, Order.Status.READY);
 		}
 		
@@ -146,11 +197,7 @@ public class OrderManagedBean implements Serializable {
 	public Map<Date, List<Order>> getNextOrders() {
 		OrderEntityManager oem = new OrderEntityManager();
 		if (nextOrders == null || nextOrders.size() <= 0) {
-			Date begin = new Date();
-			Calendar c = Calendar.getInstance();
-			c.setTime(begin);
-			c.add(Calendar.DAY_OF_MONTH, 1);
-			nextOrders = oem.getOrders(c.getTime(), null, null, null,
+			nextOrders = oem.getOrders(nextOrdersBegin, nextOrdersEnd, null, null,
 					Order.Status.INPROGRESS, Order.Status.READY);
 		}
 		return nextOrders;
@@ -165,6 +212,8 @@ public class OrderManagedBean implements Serializable {
 	private List<User> owners;
 	private List<Order.Status> statuses;
 	private Map<Date, List<Order>> lateOrders;
+	private Date lateOrdersBegin, lateOrdersEnd;
+	private Date nextOrdersBegin, nextOrdersEnd;
 	private Map<Date, List<Order>> nextOrders;
 	
 	@ManagedProperty(value="#{clientManagedBean}")

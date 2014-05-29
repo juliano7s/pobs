@@ -9,7 +9,7 @@ $(document).ready(function() {
 
 $(function() {
 	$(".datepicker").datepicker({
-		dateFormat : "yy-mm-dd"
+		dateFormat : "dd/mm/yy"
 	});
 
 	$("#hide_order").click(function() {

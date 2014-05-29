@@ -21,14 +21,14 @@
 						<h:inputText id="new_order_request_date_input" cols="10"
 							value="#{orderManagedBean.order.requestDate}"
 							styleClass="datepicker">
-							<f:convertDateTime pattern="yyyy-mm-dd"	type="date" />
+							<f:convertDateTime pattern="yyyy-MM-dd"	type="date" />
 						</h:inputText>
 
 						<h:outputText>Data da entrega: </h:outputText>
 						<h:inputText id="new_order_delivery_date_input" cols="10"
 							value="#{orderManagedBean.order.deliveryDate}"
 							styleClass="datepicker">
-							<f:convertDateTime pattern="yyyy-mm-dd" type="date" />
+							<f:convertDateTime pattern="yyyy-MM-dd" type="date" />
 						</h:inputText>
 					</h:panelGrid>	
 					

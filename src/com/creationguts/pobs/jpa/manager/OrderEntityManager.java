@@ -31,25 +31,37 @@ public class OrderEntityManager extends EntityManager<Order> {
 	public Map<Date, List<Order>> getOrders(Date beginDeliveryDate,
 			Date endDeliveryDate, Date beginReadyDate, Date endReadyDate,
 			Order.Status... status) {
+		
 		logger.debug("Parameters passed: " + beginDeliveryDate + endDeliveryDate + beginReadyDate + endReadyDate);
-		String dvrDate = "";
-		if (beginDeliveryDate == null) {
-			if (endDeliveryDate != null)
-				dvrDate = " and o.deliveryDate <= :enddvry";
-		} else {
-			if (endDeliveryDate != null)
-				dvrDate = " and o.deliveryDate >= :begindvry and o.deliveryDate <= :enddvry";
-			dvrDate = " and o.deliveryDate >= :begindvry";
-		}
 
+		String orderBy = "";
+		
 		String rdyDate = "";
 		if (beginReadyDate == null) {
-			if (endReadyDate != null)
+			if (endReadyDate != null) {
 				rdyDate = " and o.readyDate <= :endrdy";
+				orderBy = " order by o.readyDate asc";
+			}
 		} else {
 			if (endReadyDate != null)
 				rdyDate = " and o.readyDate >= :beginrdy and o.readyDate <= :endrdy";
-			rdyDate = " and o.readyDate >= :beginrdy";
+			else
+				rdyDate = " and o.readyDate >= :beginrdy";
+			orderBy = " order by o.readyDate asc";
+		}
+		
+		String dvrDate = "";
+		if (beginDeliveryDate == null) {
+			if (endDeliveryDate != null) {
+				dvrDate = " and o.deliveryDate <= :enddvry";
+				orderBy = " order by o.deliveryDate asc";
+			}
+		} else {
+			if (endDeliveryDate != null)
+				dvrDate = " and o.deliveryDate >= :begindvry and o.deliveryDate <= :enddvry";
+			else
+				dvrDate = " and o.deliveryDate >= :begindvry";
+			orderBy = " order by o.deliveryDate asc";
 		}
 		
 		String statusQry = status.length > 0 ? " and (" : "";
@@ -63,7 +75,7 @@ public class OrderEntityManager extends EntityManager<Order> {
 		logger.debug("Getting orders");
 		getEntityManager().getTransaction().begin();
 		TypedQuery<Order> q = getEntityManager().createQuery(
-				"from Order o where 1=1 " + dvrDate + rdyDate + statusQry,
+				"from Order o where 1=1 " + dvrDate + rdyDate + statusQry + orderBy,
 				Order.class);
 		logger.debug(" query formed: " + q);
 		
