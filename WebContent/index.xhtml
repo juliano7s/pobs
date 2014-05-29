@@ -14,12 +14,56 @@
 			<h:panelGroup>
 				<div>
 					<h4>Entregas atrasadas:</h4>
+					<ui:repeat var="keyDate" value="#{orderManagedBean.lateOrdersKeys}">
+						<div><h2>#{keyDate}</h2></div>
+						<ui:repeat var="order" value="#{orderManagedBean.lateOrders[keyDate]}">
+							<div class="info_block">
+								<span class="info"><b>Id: </b>#{order.id}</span> <span
+									class="info"><b>Pedido: </b>#{order.description}</span> <span
+									class="info"><b>Data: </b>#{order.requestDate}</span> <span
+									class="info"><b>Entrega: </b>#{order.deliveryDate}</span> <span
+									class="info"><b>Custo: </b>#{order.cost}</span> <span
+									class="info"><b>Valor: </b>#{order.value}</span> <span
+									class="info"><b>Status: </b>#{order.status.viewName}</span> <span
+									class="info"><b>Responsável: </b>#{order.owner.name}</span>
+								<h:form>
+									<h:commandLink action="#{orderManagedBean.editOrder}"
+										value="Editar">
+										<f:param name="orderId" value="#{order.id}" />
+									</h:commandLink>
+								</h:form>
+							</div>
+							<br />
+						</ui:repeat>
+					</ui:repeat>
 				</div>
 			</h:panelGroup>
 			
 			<h:panelGroup>
 				<div>
 					<h4>Próximas entregas:</h4>
+					<ui:repeat var="keyDate" value="#{orderManagedBean.nextOrdersKeys}">
+						<div><h2>#{keyDate}</h2></div>
+						<ui:repeat var="order" value="#{orderManagedBean.nextOrders[keyDate]}">
+							<div class="info_block">
+								<span class="info"><b>Id: </b>#{order.id}</span> <span
+									class="info"><b>Pedido: </b>#{order.description}</span> <span
+									class="info"><b>Data: </b>#{order.requestDate}</span> <span
+									class="info"><b>Entrega: </b>#{order.deliveryDate}</span> <span
+									class="info"><b>Custo: </b>#{order.cost}</span> <span
+									class="info"><b>Valor: </b>#{order.value}</span> <span
+									class="info"><b>Status: </b>#{order.status.viewName}</span> <span
+									class="info"><b>Responsável: </b>#{order.owner.name}</span>
+								<h:form>
+									<h:commandLink action="#{orderManagedBean.editOrder}"
+										value="Editar">
+										<f:param name="orderId" value="#{order.id}" />
+									</h:commandLink>
+								</h:form>
+							</div>
+							<br />
+						</ui:repeat>
+					</ui:repeat>
 				</div>
 			</h:panelGroup>
 			

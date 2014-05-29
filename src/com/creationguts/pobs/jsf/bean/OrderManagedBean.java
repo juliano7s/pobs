@@ -2,7 +2,10 @@ package com.creationguts.pobs.jsf.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -73,7 +76,7 @@ public class OrderManagedBean implements Serializable {
 		order = new Order();
 		return clientManagedBean.viewClient();
 	}
-	
+			
 	public ClientManagedBean getClientManagedBean() {
 		return clientManagedBean;
 	}
@@ -113,11 +116,56 @@ public class OrderManagedBean implements Serializable {
 	public void setStatuses(List<Order.Status> statuses) {
 		this.statuses = statuses;
 	}
+	
+	public List<Date> getLateOrdersKeys()  {
+		return new ArrayList<Date>(getLateOrders().keySet());
+	}
+	
+	public Map<Date, List<Order>> getLateOrders() {
+		OrderEntityManager oem = new OrderEntityManager();
+		if (lateOrders == null || lateOrders.size() <= 0) {
+			Date begin = new Date();
+			Calendar c = Calendar.getInstance();
+			c.setTime(begin);
+			c.add(Calendar.DAY_OF_MONTH, -1);
+			lateOrders = oem.getOrders(null, c.getTime(), null, null,
+					Order.Status.INPROGRESS, Order.Status.READY);
+		}
+		
+		return lateOrders;
+	}
+
+	public void setLateOrders(Map<Date, List<Order>> lateOrders) {
+		this.lateOrders = lateOrders;
+	}
+
+	public List<Date> getNextOrdersKeys()  {
+		return new ArrayList<Date>(getNextOrders().keySet());
+	}
+	
+	public Map<Date, List<Order>> getNextOrders() {
+		OrderEntityManager oem = new OrderEntityManager();
+		if (nextOrders == null || nextOrders.size() <= 0) {
+			Date begin = new Date();
+			Calendar c = Calendar.getInstance();
+			c.setTime(begin);
+			c.add(Calendar.DAY_OF_MONTH, 1);
+			nextOrders = oem.getOrders(c.getTime(), null, null, null,
+					Order.Status.INPROGRESS, Order.Status.READY);
+		}
+		return nextOrders;
+	}
+
+	public void setNextOrders(Map<Date, List<Order>> nextOrders) {
+		this.nextOrders = nextOrders;
+	}
 
 	private Order order;
 	private Long orderOwnerId;
 	private List<User> owners;
 	private List<Order.Status> statuses;
+	private Map<Date, List<Order>> lateOrders;
+	private Map<Date, List<Order>> nextOrders;
 	
 	@ManagedProperty(value="#{clientManagedBean}")
 	private ClientManagedBean clientManagedBean;
